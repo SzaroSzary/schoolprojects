@@ -1,0 +1,28 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>zad5_wrzesień
+        </title>
+        <script>
+            var tekst = window.prompt("Podaj tekst, w którym chcesz znaleźć samogłoski.")
+            var wynik = "";
+            tekst=tekst.split("");
+            var dlugosc = tekst.length;
+            var samogloski=["a", "ą", "e", "ę", "i", "o", "u", "y"];
+            for (var i=0;i<dlugosc;i++){
+                for (var j=0; j < samogloski.length; j++){
+                    if(tekst[i] == samogloski[j]){
+                        tekst[i]=tekst[i].bold().fontcolor("red")
+                    }
+                }  
+            }
+            tekst=tekst.join("");
+            console.log(tekst)
+            toString(tekst);
+            document.write(tekst);
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

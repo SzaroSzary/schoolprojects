@@ -1,0 +1,65 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>zad6_wrzesień
+        </title>
+        <script>
+            var dane = window.prompt("Wpisz tablice")
+            dane=dane.split("")
+            var pomocnicza = [""]
+            console.log(dane)
+            przekształcenie()
+            function przekształcenie(){
+                var parametry = window.prompt("Podaj w jakim kierunku i o ile chcesz przesunac tablice: l - lewo, p - prawo, k - koniec (np p1)")
+                var kierunek = parametry.substr(0,1)
+                console.log(kierunek)
+                var przesuniecie = parametry.substr(1,parametry.length)
+                przesuniecie = parseInt(przesuniecie)
+                przesuniecie = przesuniecie % dane.length
+                console.log(przesuniecie)
+                    if (kierunek == "p"){
+                        for(var i=0, j=0; i<dane.length; i++){
+                            if(i+przesuniecie>=dane.length){
+                                pomocnicza[j]=dane[i]
+                                j++
+                            }
+                            else{
+                                pomocnicza[i+przesuniecie]=dane[i]    
+                            }
+                        }
+                        for(var k=0;k<dane.length;k++){
+                            dane[k]=pomocnicza[k]
+                        }
+                        console.log(pomocnicza)
+                        przekształcenie()
+                    }
+                    else if (kierunek == "l"){
+                        for(var i=0, j=0; i<dane.length; i++){
+                            if(i-przesuniecie<0){
+                                pomocnicza[dane.length-przesuniecie+j]=dane[i]
+                                j++
+                            }
+                            else{
+                                pomocnicza[i-przesuniecie]=dane[i]    
+                            }
+                        }
+                        for(var k=0;k<dane.length;k++){
+                            dane[k]=pomocnicza[k]
+                        }
+                        dane=pomocnicza
+                        console.log(pomocnicza)
+                        przekształcenie()
+                    }
+                    else if (kierunek=="k"){
+                            
+                    }
+                    else{
+                        przekształcenie()
+                    }
+            }
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

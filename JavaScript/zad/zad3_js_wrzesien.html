@@ -1,0 +1,34 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>zad3_wrzesień
+        </title>
+        <script>
+            var fibo = window.prompt("Podaj ktory wyraz ciagu chcesz otrzymac");
+            fibo=parseInt(fibo);
+            fib= fibo;
+            var x=0;
+            var y=1;
+            if (fibo==x){
+                document.write("0");
+                txt=x;
+            }
+            else if (fibo==y){
+                document.write("1");
+                txt=y;
+            }
+            else
+                for (var i = 0; i <= fibo-2; i++){
+                    if (i==0)
+                        document.write("1")
+                    fib = x+y;
+                    x=y;
+                    y=fib;
+                    document.write(", "+fib)
+                }
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

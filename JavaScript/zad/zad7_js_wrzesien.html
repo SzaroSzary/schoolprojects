@@ -1,0 +1,31 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>zad7_wrzesień
+        </title>
+        <script>
+            var tekst = window.prompt("Wpisz tekst")
+            console.log(tekst)
+            tekst=tekst.split(" ")
+            console.log(tekst)
+            var slowo = window.prompt("Wpisz szukane slowo")
+            for (var i=0;i<tekst.length;i++){
+                if(slowo==tekst[i].toLowerCase()){
+                    tekst[i]="<u>"+slowo+"</u>"
+                }
+                else if (slowo+"," == tekst[i].toLowerCase()){
+                    tekst[i]="<u>"+slowo+"</u>"+","
+                }
+                else if (slowo+"." == tekst[i].toLowerCase()){
+                    tekst[i]="<u>"+slowo+"</u>"+"."
+                }
+            }
+            tekst = tekst.join(" ")
+            toString(tekst)
+            document.write(tekst)
+        </script>
+    </head>
+    <body>
+    </body>
+</html>

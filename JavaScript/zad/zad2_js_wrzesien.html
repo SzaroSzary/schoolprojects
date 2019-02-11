@@ -1,0 +1,23 @@
+<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>zad2_wrzesień
+        </title>
+        <script>
+            var wysokosc = window.prompt("Jak wysoka ma byc choinka?");
+            var i="0";
+            var txt="";
+            for(var i=1; i<=wysokosc; i++){
+                for(k=wysokosc;k>=i;k--)
+                    txt+="&nbsp;&nbsp;"
+                for(j=1;j<=i*2;j++)
+                    txt+="*";
+                txt+="<br/>";
+            }
+            document.write("wysokosc = "+wysokosc+"</br>"+txt);
+        </script>
+    </head>
+    <body>
+    </body>
+</html>
