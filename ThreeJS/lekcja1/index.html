@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+	<meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                fov, // kąt patrzenia kamery (FOV - field of view)
+                res, // proporcje widoku, powinny odpowiadać proporjom naszego ekranu przeglądarki
+                minrender, // minimalna renderowana odległość
+                maxrender // maxymalna renderowana odległość
+                );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0xffffff);
+            renderer.setSize(szerokosc, wysokosc);
+            var geometry = new THREE.CubeGeometry(100, 100, 100, 1, 1, 1);
+            var normal = new THREE.CubeGeometry(50, 50, 50, 1, 1, 1);
+            var material = new THREE.MeshBasicMaterial({
+                color: 0x0000ff, side: THREE.DoubleSide, wireframe: true
+            });
+            var material2 = new THREE.MeshBasicMaterial({
+                color: 0xff0000, side: THREE.DoubleSide, wireframe: true
+            });
+            var mesh = new THREE.Mesh(geometry, material);
+            var mesh2 = new THREE.Mesh(normal,material2)
+            scene.add(mesh);
+            scene.add(mesh2);
+            document.getElementById("main").appendChild(renderer.domElement);
+            camera.position.x = -200;
+            camera.position.y = 200;
+            camera.position.z = 200;
+            camera.lookAt(mesh.position);
+            function animateScene() {
+                document.getElementById("fov").oninput = function () {
+                    var y = document.getElementById("fov").value
+                    y = parseInt(y)
+                    camera.fov = y;
+                }
+                document.getElementById("scale").oninput = function () {
+                    var x = document.getElementById("scale").value
+                    x = parseInt(x)
+                    x= x/50
+                    mesh.scale.set(x, x, x);
+                }
+                var x = document.getElementById("rotation").value
+                x = parseInt(x)
+                x = x / 500
+                mesh.rotation.y += x;
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            animateScene();
+            document.getElementById("black").onclick = function() {
+                renderer.setClearColor(0x000000)
+            }
+            document.getElementById("white").onclick = function () {
+                renderer.setClearColor(0xffffff)
+            }
+            var objects = [
+                ["Box", new THREE.BoxGeometry(100, 100, 100)],
+                ["Cube", new THREE.BoxGeometry(100, 100, 100, 1, 1, 1)],
+                ["Circle", new THREE.CircleGeometry(100, 30)],
+                ["Cylinder", new THREE.CylinderGeometry(100, 100, 100, 30)],
+                ["Dodecahedron", new THREE.DodecahedronGeometry(100, 1)],
+                ["Icosahedron", new THREE.IcosahedronGeometry(100, 1)],
+                ["Octahedron", new THREE.OctahedronGeometry(100, 1)],
+                ["Plane", new THREE.PlaneGeometry(100, 100, 10)],
+                ["Ring", new THREE.RingGeometry(100, 50, 100)],
+                ["Sphere", new THREE.SphereGeometry(100, 32, 20)],
+                ["Tetrahedron", new THREE.TetrahedronGeometry(100, 1)],
+                ["Torus", new THREE.TorusGeometry(100, 30, 16, 50)]
+            ]
+            var select = document.createElement("SELECT")
+            select.setAttribute("style", "postion:relative;right:10px;float:right;bottom:10px;width:120px;height:30px;")
+            select.setAttribute("id", "select")
+            document.getElementById("menu").appendChild(select)
+            for(var i=0;i<objects.length;i++){
+                var banana = document.createElement("OPTION")
+                banana.innerHTML = objects[i][0]
+                select.appendChild(banana)
+            }
+            select.onchange =function(){
+                for (var i=0;i<objects.length;i++){
+                    if(select.value == objects[i][0]){
+                        scene.remove(mesh);
+                        geometry = objects[i][1]
+                        material = new THREE.MeshBasicMaterial({
+                            color: 0x0000ff, side: THREE.DoubleSide, wireframe: true
+                        });
+                        mesh = new THREE.Mesh(geometry, material);
+                        scene.add(mesh);
+                    }
+                }
+            }
+        })
+    </script>
+    <style>
+        body{
+            margin:0;
+            overflow:hidden;
+        }
+        #menu{
+            position:absolute;
+            right:0;
+            top:0;
+            width:20vw;
+            height:100vh;
+            background:yellow;
+        }
+        #black{
+            background:black;
+            width:50px;
+            height:50px;
+            position:relative;
+            left: 15px;
+            top:60px;
+        }
+        #white{
+            background:white;
+            width:50px;
+            height:50px;
+            position:relative;
+            left: 15px;
+            top:75px;
+        }
+        #fov{
+            width:90%;
+            height:20px;
+            position:relative;
+            left: 15px;
+            top:15px;
+        }
+        #scale{
+            width:90%;
+            height:20px;
+            position:relative;
+            left: 15px;
+            top:30px;
+        }
+        #rotation{
+            width:90%;
+            height:20px;
+            position:relative;
+            left: 15px;
+            top:45px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <div id="menu">
+        <input type="range" id="fov" class="input"/>
+        <input type="range" id="scale" class="input" />
+        <input type="range" id="rotation" class="input"/>
+        <div id="black" ></div>
+        <div id="white"></div>
+    </div>
+</body>
+</html>
