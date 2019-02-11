@@ -1,0 +1,126 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Mongo</title>
+	<meta charset="utf-8" />
+    <style>
+        #add{
+            width: 100px;
+            height:30px;
+            position:absolute;
+            left:500px;
+            top:10px;
+        }
+        #delete{
+            width: 100px;
+            height:30px;
+            position:absolute;
+            left:610px;
+            top:10px;
+        }
+        #select{
+            width: 100px;
+            height:30px;
+            position:absolute;
+            left:720px;
+            top:10px;
+        }
+        #update{
+            width: 100px;
+            height:30px;
+            position:absolute;
+            left:830px;
+            top:10px;
+        }
+        #database{
+            width: 600px;
+            height:600px;
+            position:absolute;
+            left:10px;
+            top:50px;
+        }
+        #login{
+            width: 200px;
+            height: 30px;
+            position:absolute;
+            left:10px;
+            top:10px;
+        }
+        #password{
+            width: 200px;
+            height: 30px;
+            position:absolute;
+            left:220px;
+            top:10px;
+        }
+    </style>
+    <script src="https://cdn.socket.io/socket.io-1.4.5.js"></script>
+
+</head>
+<body>
+    <input type="button" id="add" value="ADD"/>
+    <input type="button" id="delete" value="DELETE"/>
+    <input type="button" id="select" value="SELECT"/>
+    <input type="button" id="update" value="UPDATE"/>
+    <input type="text" id="login"/>
+    <input type="text" id="password" />
+    <textarea id="database"></textarea>
+    <script>
+        window.addEventListener("load", function () {
+            var client = io();
+            client.on("onconnect", function (data) {
+            })
+            document.getElementById("add").onclick = function () {
+                client.emit("add", {
+                    login: document.getElementById("login").value,
+                    password: document.getElementById("password").value
+                })
+            }
+            document.getElementById("delete").onclick = function () {
+                client.emit("delete", {
+                    login: document.getElementById("login").value,
+                    password: document.getElementById("password").value
+                })
+            }
+            document.getElementById("select").onclick = function () {
+                client.emit("select", {})
+            }
+            client.on("select", function (data) {
+                document.getElementById("database").innerHTML = data.res
+                var elem = document.getElementById("delsel");
+                elem.parentNode.removeChild(elem);
+                var select = document.createElement("select")
+                select.id = "delsel"
+                select.setAttribute("style", "position:absolute;left:700px;top:100px;width:150px;height:30px;")
+                document.body.appendChild(select)
+                var ids = JSON.parse(data.res)
+                for (var i = 0; i < ids.length; i++) {
+                    var opt = document.createElement("option")
+                    opt.innerHTML = ids[i]._id
+                    document.getElementById("delsel").appendChild(opt)
+                }
+            })
+            document.getElementById("update").onclick = function () {
+                client.emit("update", {
+                    id: document.getElementById("delsel").value,
+                    login: document.getElementById("login").value,
+                    password: document.getElementById("password").value
+                })
+            }
+            /*client.on("update", function (data) {
+                document.getElementById("database").innerHTML = data.res
+                console.log(data)
+            })*/
+            document.getElementById("delete").onclick = function () {
+                client.emit("delete", {
+                    id: document.getElementById("delsel").value
+                })
+            }
+            var select = document.createElement("select")
+            select.id = "delsel"
+            select.setAttribute("style","position:absolute;left:700px;top:100px;width:150px;height:30px;")
+            document.body.appendChild(select)
+        })
+    </script>
+</body>
+</html>
