@@ -1,0 +1,541 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Clickslide</title>
+    <meta charset="UTF-8"/>
+</head>
+<body>
+    <script>
+        var wielkosc = 3
+        var licznik = 0
+        var losowanieklockow = 0
+        var wybraniec = 0
+        var body = document.getElementsByTagName("body")
+        document.body.setAttribute("style","background: black;margin:0;padding:0;")
+        document.body.innerHTML = "<div style='position:absolute;width:500px;height:700px;left:calc(50% - 250px);' id='main'></div><div id='ekranzwyciestwa'><div id='wyniki'></div></div>"
+        var slider = document.createElement("DIV")
+        slider.setAttribute("id","slider")
+        slider.setAttribute("style","width:300px;height:100px;position:relative;float:left;left:calc(50% - 150px);")
+        document.getElementById("main").appendChild(slider)
+        var lewak = document.createElement("IMG")
+        lewak.src = "images/arrowleft.png"
+        lewak.setAttribute("id","lewak")
+        lewak.setAttribute("style","position:absolute;width:100px;height:100px;left:0;")
+        lewak.setAttribute("onclick","lewo(this)")
+        document.getElementById("slider").appendChild(lewak)
+        var obrazki = document.createElement("DIV")
+        obrazki.setAttribute("style","width:100px;height:100px;float:left;overflow:hidden;position:absolute;left:100px;")
+        obrazki.setAttribute("id","obrazki")
+        obrazki.scrollLeft=0
+        document.getElementById("slider").appendChild(obrazki)
+        for(var i=0;i<4;i++){
+            var obrazek = document.createElement("IMG")
+            obrazek.src = "images/kremowka"+i+".jpg"
+            obrazek.className="obrazki"
+            obrazek.setAttribute("id","obraz"+i)
+            obrazek.setAttribute("style", "float:right;width:100px;height:100px;position:absolute;left:"+(i*100)+"px;")
+            document.getElementById("obrazki").appendChild(obrazek)    
+        }
+        var prawy = document.createElement("IMG")
+        prawy.src = "images/arrowright.png"
+        prawy.setAttribute("id","prawy")
+        prawy.setAttribute("style","position:absolute;width:100px;height:100px;left:200px;")
+        prawy.setAttribute("onclick","prawo(this)")
+        document.getElementById("slider").appendChild(prawy)
+        var tryby = document.createElement("DIV")
+        tryby.setAttribute("id","tryby")
+        tryby.setAttribute("style","width:300px;height:100px;position:relative;top:100px;")
+        document.getElementById("main").appendChild(tryby)
+        for(var i=3;i<7;i++){
+            var button = document.createElement("BUTTON")
+            button.setAttribute("id","button"+i)
+            button.setAttribute("style","position:relative;width:50px;height:20px;top:-80px;left:150px;")
+            button.innerHTML = i+"x"+i
+            button.setAttribute("onclick","wybor(this)")
+            document.getElementById("tryby").appendChild(button)
+        }
+        var stoper = document.createElement("DIV")
+        stoper.setAttribute("style","width:480px;height:50px;position:absolute;top:150px;left:calc(50% - 240px);overflow:visible;")
+        stoper.setAttribute("id","stoper")
+        document.getElementById("main").appendChild(stoper)
+        var maly = document.createElement("DIV")
+        maly.setAttribute("id","maly")
+        maly.setAttribute("style","width:480px;height:50px;position:relative;left:calc(50% - 120px);color:white;")
+        document.getElementById("stoper").appendChild(maly)
+        var plansza = document.createElement("DIV")
+        plansza.setAttribute("style","width:480px;height:480px;position:relative;top:100px;left:calc(50% - 240px);border: 1px red solid;")
+        plansza.setAttribute("id","plansza")
+        document.getElementById("main").appendChild(plansza)
+        var ekranzwyciestwa = document.getElementById("ekranzwyciestwa")
+        ekranzwyciestwa.setAttribute("style","width:100%;height:100%;position:absolute;display:none;background:black;")
+        var wyniki = document.getElementById("wyniki")
+        wyniki.setAttribute("style","width:400px;height:600px;position:relative;float:right;top:100px;color:white;font-family:Arial;text-align:center;font-size:30px;")
+        wyniki.innerHTML = "NAJLEPSZE WYNIKI"
+        var takitamkomunikat = document.createElement("DIV")
+        takitamkomunikat.setAttribute("id","takitamkomunikat")
+        takitamkomunikat.setAttribute("style","width:600px;height:50px;color:white;text-align:center;font-size:30px;position:absolute;top:calc(50% - 25px);left:calc(50% - 300px);font-family:Arial;")
+        document.getElementById("ekranzwyciestwa").appendChild(takitamkomunikat)
+        var stoperon = false
+        var porazpierwszy = true
+        var czas = 0
+        var rekord = ""
+        var intheend = true
+        function stoperek(){
+            var t = new Date()
+            var n = t.getTime()
+            if(porazpierwszy==true){
+                czas = n
+                porazpierwszy = false
+            }
+            var obecny = n-czas
+            var godziny = Math.floor(obecny/(60*60*1000))
+            obecny = obecny % (60*60*1000)
+            var minuty = Math.floor(obecny/(60*1000))
+            obecny = obecny % (60*1000)
+            var sekundy = Math.floor(obecny/1000)
+            var milisekundy = obecny%1000
+            godziny = godziny.toString()
+            minuty = minuty.toString()
+            sekundy = sekundy.toString()
+            milisekundy = milisekundy.toString()
+            if(godziny.length==1){
+                godziny = "0"+godziny
+            }
+            if(minuty.length==1){
+                minuty = "0"+minuty
+            }
+            if(sekundy.length==1){
+                sekundy = "0"+sekundy
+            }
+            if(milisekundy.length==1){
+                milisekundy = "0"+milisekundy
+            }
+            if(milisekundy.length==2){
+                milisekundy = "0"+milisekundy
+            }
+            var stoperan = godziny+":"+minuty+":"+sekundy+"."+milisekundy.toString()
+            document.getElementById("maly").innerHTML = "<img src=images/"+stoperan[0]+".gif alt=blalbla/><img src=images/"+stoperan[1]+".gif alt=blalbla/><img src=images/dwukropek.gif alt=blalbla/><img src=images/"+stoperan[3]+".gif alt=blalbla/><img src=images/"+stoperan[4]+".gif alt=blalbla/><img src=images/dwukropek.gif alt=blalbla/><img src=images/"+stoperan[6]+".gif alt=blalbla/><img src=images/"+stoperan[7]+".gif alt=blalbla/><img src=images/kropka.gif alt=blalbla/><img src=images/"+stoperan[9]+".gif alt=blalbla/><img src=images/"+stoperan[10]+".gif alt=blalbla/><img src=images/"+stoperan[11]+".gif alt=blalbla/>"
+            var tabliczka = document.getElementById("maly").children
+            for(var i=0;i<tabliczka.length;i++){
+                tabliczka[i].setAttribute("style","width:20px;height:30px;float:left;")
+            }
+            rekord = godziny+":"+minuty+":"+sekundy+"."+milisekundy
+        }
+        var komputer = []
+        var przesuwanie = []
+        var iteracja = 0
+        var jazda = 100
+        obszargry(wielkosc)
+        function lewo(x){
+            if(wybraniec==0){
+                wybraniec=3
+            }
+            wybraniec--
+            var przemieszczenie = setInterval(jedziemy,1)
+            function jedziemy(){
+                if(jazda==0){
+                    clearInterval(przemieszczenie)
+                    jazda = 100
+                }
+                else{
+                    jazda--
+                    document.getElementById("obrazki").scrollLeft = wybraniec*100+jazda
+                }
+            }
+            console.log(wielkosc)
+            losowanieklockow=0
+            stoperon = false
+            porazpierwszy = true
+            czas = 0
+            rekord = ""
+            intheend = true
+            var dousuniecia = document.getElementById("wyniki")
+            var licznik = dousuniecia.childElementCount
+            for(var i=0;i<licznik;i++){
+                dousuniecia.removeChild(dousuniecia.lastChild)
+            }
+            obszargry(wielkosc)
+        }
+        function prawo(x){
+            if(wybraniec==3){
+                wybraniec=0
+            }
+            wybraniec++
+            var przemieszczenie = setInterval(jedziemy,1)
+            function jedziemy(){
+                if(jazda==0){
+                    clearInterval(przemieszczenie)
+                    jazda = 100
+                }
+                else{
+                    jazda--
+                    document.getElementById("obrazki").scrollLeft = wybraniec*100-jazda
+                }
+            }
+            console.log(x.id)
+            losowanieklockow=0
+            stoperon = false
+            porazpierwszy = true
+            czas = 0
+            rekord = ""
+            intheend = true
+            var dousuniecia = document.getElementById("wyniki")
+            var licznik = dousuniecia.childElementCount
+            for(var i=0;i<licznik;i++){
+                dousuniecia.removeChild(dousuniecia.lastChild)
+            }
+            obszargry(wielkosc)
+        }
+        function obszargry(wielkosc){
+            for (i=0; i<wielkosc+2;i++){
+                komputer[i]=[];
+                for(j=0;j<wielkosc+2;j++){
+                    komputer[i][j]=0;
+                }
+            }
+            for (i=0; i<wielkosc+2;i++){
+                przesuwanie[i]=[];
+                for(j=0;j<wielkosc+2;j++){
+                    przesuwanie[i][j]=0;
+                }
+            }
+            var usuwam = document.getElementById("plansza");
+            while (usuwam.firstChild) {
+                usuwam.removeChild(usuwam.firstChild);
+            }
+            for(var i=0, k=0;i<wielkosc;i++){
+                for(var j=0;j<wielkosc && k<(wielkosc*wielkosc);j++,k++){
+                    generacja(wielkosc, k, i, j)
+                }
+            }
+            var t = setTimeout("tasowanie()", 100)
+        }
+        function tasowanie(){
+            var czarny = document.getElementById("czarny")
+            var czarnyleft = czarny.offsetLeft
+            var czarnytop = czarny.offsetTop
+            var losowa = Math.floor(Math.random() * 2)
+            if(losowa==0){
+                for(var i=0;i<wielkosc;i++){
+                    if((480/wielkosc)*i==czarnyleft){
+                        if(czarnyleft!=0){
+                            var lewoprawo = Math.floor(Math.random() * 2)
+                            if(lewoprawo==0){
+                                var banani = 0
+                                var bananj = 0
+                                for(var k=0;k<przesuwanie.length;k++){
+                                    for(var j=0;j<przesuwanie.length;j++){
+                                        if(przesuwanie[k][j]=="czarny"){
+                                            banani = k
+                                            bananj = j
+                                        }
+                                    }
+                                }
+                                var elemencik = przesuwanie[banani][bananj-1]
+                                przesuwanie[banani][bananj] = elemencik
+                                przesuwanie[banani][bananj-1] = "czarny"
+                                var element = document.getElementById(""+elemencik)
+                                var elementleft = element.offsetLeft
+                                var elementtop = element.offsetTop
+                                element.style.left = czarnyleft+"px";
+                                element.style.top = czarnytop+"px";
+                                czarny.style.left = elementleft+"px";
+                                czarny.style.top = elementtop+"px";
+                            }
+                            else if(lewoprawo==1 && (480/wielkosc)*i+(480/wielkosc)!=480){
+                                poziomelosowanie(czarny, czarnyleft, czarnytop, losowa)
+                            }
+                            else{
+                                var t = setTimeout("tasowanie()", 100)
+                            }
+                        }
+                        else{
+                            poziomelosowanie(czarny, czarnyleft, czarnytop, losowa)
+                        }
+                    }
+                }
+            }
+            else{
+                for(var i=0;i<wielkosc;i++){
+                    if((480/wielkosc)*i==czarnytop){
+                        if(czarnytop!=0){
+                            var lewoprawo = Math.floor(Math.random() * 2)
+                            if(lewoprawo==0){
+                                var banani = 0
+                                var bananj = 0
+                                for(var k=0;k<przesuwanie.length;k++){
+                                    for(var j=0;j<przesuwanie.length;j++){
+                                        if(przesuwanie[k][j]=="czarny"){
+                                            banani = k
+                                            bananj = j
+                                        }
+                                    }
+                                }
+                                var elemencik = przesuwanie[banani-1][bananj]
+                                przesuwanie[banani][bananj] = elemencik
+                                przesuwanie[banani-1][bananj] = "czarny"
+                                var element = document.getElementById(""+elemencik)
+                                var elementleft = element.offsetLeft
+                                var elementtop = element.offsetTop
+                                element.style.left = czarnyleft+"px";
+                                element.style.top = czarnytop+"px";
+                                czarny.style.left = elementleft+"px";
+                                czarny.style.top = elementtop+"px";
+                            }
+                            else if(lewoprawo==1 && (480/wielkosc)*i+(480/wielkosc)!=480){
+                                pionowelosowanie(czarny, czarnyleft, czarnytop, losowa)
+                            }
+                            else{
+                                var t = setTimeout("tasowanie()", 100)
+                            }
+                        }
+                        else{
+                            pionowelosowanie(czarny, czarnyleft, czarnytop, losowa)
+                        }
+                    }
+                }
+            }
+            if(losowanieklockow<(wielkosc*200)){
+                var t = setTimeout("tasowanie()", 100)
+                losowanieklockow++
+            }
+        }
+        function poziomelosowanie(czarny, czarnyleft, czarnytop, losowa){
+            var banani = 0
+            var bananj = 0
+            for(var k=0;k<przesuwanie.length;k++){
+            for(var j=0;j<przesuwanie.length;j++){
+                if(przesuwanie[k][j]=="czarny"){
+                        banani = k
+                        bananj = j
+                    }
+                }
+            }
+            var elemencik = przesuwanie[banani][bananj+1]
+            przesuwanie[banani][bananj] = elemencik
+            przesuwanie[banani][bananj+1] = "czarny"
+            var element = document.getElementById(""+elemencik)
+            var elementleft = element.offsetLeft
+            var elementtop = element.offsetTop
+            element.style.left = czarnyleft+"px";
+            element.style.top = czarnytop+"px";
+            czarny.style.left = elementleft+"px";
+            czarny.style.top = elementtop+"px";
+        }
+        function pionowelosowanie(czarny, czarnyleft, czarnytop, losowa){
+            var banani = 0
+            var bananj = 0
+            for(var k=0;k<przesuwanie.length;k++){
+                for(var j=0;j<przesuwanie.length;j++){
+                    if(przesuwanie[k][j]=="czarny"){
+                        banani = k
+                        bananj = j
+                    }
+                }
+            }
+            var elemencik = przesuwanie[banani+1][bananj]
+            przesuwanie[banani][bananj] = elemencik
+            przesuwanie[banani+1][bananj] = "czarny"
+            var element = document.getElementById(""+elemencik)
+            var elementleft = element.offsetLeft
+            var elementtop = element.offsetTop
+            element.style.left = czarnyleft+"px";
+            element.style.top = czarnytop+"px";
+            czarny.style.left = elementleft+"px";
+            czarny.style.top = elementtop+"px";
+        }
+        function generacja(wielkosc, k, i, j){
+            if(komputer[j+1][i+1]==0 && k==(wielkosc*wielkosc)-1){   
+                var pole = document.createElement("DIV")
+                pole.setAttribute("id", "czarny")
+                pole.setAttribute("style","cursor: pointer;position: absolute;width:"+(100/wielkosc)+"%;height:"+(100/wielkosc)+"%;float:left;background:black;left:"+(j*(480/wielkosc))+"px; top:"+(i*(480/wielkosc))+"px;")
+                document.getElementById("plansza").appendChild(pole)
+                przesuwanie[i+1][j+1]=pole.id
+            }
+            else if(komputer[j+1][i+1]==0){
+                var pole = document.createElement("DIV")
+                pole.setAttribute("id", "klocek"+k)
+                pole.setAttribute("style","cursor: pointer;position:absolute;width:"+(100/wielkosc)+"%;height:"+(100/wielkosc)+"%;float: left;background-image:url(images/kremowka"+wybraniec+".jpg);background-position: -"+(j*(480/wielkosc))+"px -"+(i*(480/wielkosc))+"px; left:"+(j*(480/wielkosc))+"px; top:"+(i*(480/wielkosc))+"px;")
+                pole.setAttribute("onclick","klikniecie(this)")
+                document.getElementById("plansza").appendChild(pole)
+                komputer[j+1][i+1]=1
+                przesuwanie[i+1][j+1]=pole.id
+            }
+        }
+        function wybor(x){
+            losowanieklockow=0
+            wielkosc = x.id
+            wielkosc = wielkosc[6]
+            wielkosc = parseInt(wielkosc)
+            stoperon = false
+            porazpierwszy = true
+            czas = 0
+            rekord = ""
+            intheend = true
+            var dousuniecia = document.getElementById("wyniki")
+            var licznik = dousuniecia.childElementCount
+            for(var i=0;i<licznik;i++){
+                dousuniecia.removeChild(dousuniecia.lastChild)
+            }
+            obszargry(wielkosc)
+        }
+        var tre
+        function klikniecie(x){
+            if(intheend==true){
+                console.log(wielkosc)
+                document.getElementById("lewak").style.pointerEvents = "none"
+                document.getElementById("prawy").style.pointerEvents = "none"
+                var czarny = document.getElementById("czarny")
+                var czarnyleft = czarny.offsetLeft
+                var czarnytop = czarny.offsetTop
+                var klikleft = x.offsetLeft
+                var kliktop = x.offsetTop
+                if(klikleft-(480/wielkosc)==czarnyleft && kliktop==czarnytop || klikleft+(480/wielkosc)==czarnyleft && kliktop==czarnytop || kliktop-(480/wielkosc)==czarnytop && klikleft==czarnyleft || kliktop+(480/wielkosc)==czarnytop && klikleft==czarnyleft){
+                    if(stoperon==false){
+                        tre = setInterval("stoperek()",1)
+                        stoperon = true
+                    }
+                    x.style.left = czarnyleft+"px";
+                    x.style.top = czarnytop+"px";
+                    czarny.style.left = klikleft+"px";
+                    czarny.style.top = kliktop+"px";
+                }
+                var wygrana = 0
+                var ekranik = 0
+                for(var i=0, k=0;i<wielkosc;i++){
+                    for(var j=0;j<wielkosc && k<(wielkosc*wielkosc)-2;j++,k++){
+                        var lewy = document.getElementById("klocek"+k).offsetLeft
+                        var gora = document.getElementById("klocek"+k).offsetTop
+                        if(lewy==(j*(480/wielkosc)) && gora==(i*(480/wielkosc)) && document.getElementById("czarny").offsetLeft==(wielkosc-1)*(480/wielkosc) &&document.getElementById("czarny").offsetTop==(wielkosc-1)*(480/wielkosc)){
+                            wygrana++
+                            if(wygrana==(wielkosc*wielkosc)-2){
+                                clearTimeout(tre)
+                                takitamkomunikat.innerHTML = "WYGRYWASZ!<br/>TWÓJ CZAS TO: "+rekord
+                                var gruszka = setInterval(kanapka,25)
+                                function kanapka(){
+                                    if(ekranik==10){
+                                        clearInterval(gruszka)
+                                        ekranik = 0
+                                    }
+                                    else{
+                                        ekranik++
+                                        if(ekranik==10){
+                                            var zwyciestwo = document.getElementById("ekranzwyciestwa")
+                                            zwyciestwo.style.opacity = "1.0"
+                                            zwyciestwo.style.display = "block"
+                                        }
+                                        else{
+                                            var zwyciestwo = document.getElementById("ekranzwyciestwa")
+                                            zwyciestwo.style.opacity = "0."+ekranik
+                                            zwyciestwo.style.display = "block"
+                                        }
+                                    }
+                                }
+                                document.getElementById("ekranzwyciestwa").setAttribute("onclick","zamknijzwyciestwo(this)")
+                                document.getElementById("lewak").style.pointerEvents = "auto"
+                                document.getElementById("prawy").style.pointerEvents = "auto"
+                                intheend = false
+                                console.log("rekord")
+                                if(document.cookie.length == 0){
+                                    for(var o=3;o<7;o++){
+                                        document.cookie = o+"="+";expires=Thu, 31 Dec 2034 12:00:00 UTC"
+                                    }
+                                }
+                                var ciasteczko = document.cookie.split(";")
+                                switch(wielkosc){
+                                    case 3:
+                                        ciasteczko = ciasteczko[0]
+                                        ciasteczka(ciasteczko)
+                                        for(var i=0;i<document.cookie.split(";")[0].split("=")[1].split(",").length;i++){
+                                            var wypis = document.createElement("DIV")
+                                            wypis.setAttribute("style","width:400px;height:30px;float:left;")
+                                            wypis.innerHTML = document.cookie.split(";")[0].split("=")[1].split(",")[i]+""
+                                            wypis.setAttribute("id","wynik"+(i+1))
+                                            document.getElementById("wyniki").appendChild(wypis)
+                                        }
+                                        break;
+                                    case 4:
+                                        ciasteczko = ciasteczko[1]
+                                        ciasteczka(ciasteczko)
+                                        for(var i=0;i<document.cookie.split(";")[1].split("=")[1].split(",").length;i++){
+                                            var wypis = document.createElement("DIV")
+                                            wypis.setAttribute("style","width:400px;height:30px;float:left;")
+                                            wypis.innerHTML = document.cookie.split(";")[1].split("=")[1].split(",")[i]+""
+                                            wypis.setAttribute("id","wynik"+(i+1))
+                                            document.getElementById("wyniki").appendChild(wypis)
+                                        }
+                                        break;
+                                    case 5:
+                                        ciasteczko = ciasteczko[2]
+                                        ciasteczka(ciasteczko)
+                                        for(var i=0;i<document.cookie.split(";")[2].split("=")[1].split(",").length;i++){
+                                            var wypis = document.createElement("DIV")
+                                            wypis.setAttribute("style","width:400px;height:30px;float:left;")
+                                            wypis.innerHTML = document.cookie.split(";")[2].split("=")[1].split(",")[i]+""
+                                            wypis.setAttribute("id","wynik"+(i+1))
+                                            document.getElementById("wyniki").appendChild(wypis)
+                                        }
+                                        break;
+                                    case 6:
+                                        ciasteczko = ciasteczko[3]
+                                        ciasteczka(ciasteczko)
+                                        for(var i=0;i<document.cookie.split(";")[3].split("=")[1].split(",").length;i++){
+                                            var wypis = document.createElement("DIV")
+                                            wypis.setAttribute("style","width:400px;height:30px;float:left;")
+                                            wypis.innerHTML = document.cookie.split(";")[3].split("=")[1].split(",")[i]+""
+                                            wypis.setAttribute("id","wynik"+(i+1))
+                                            document.getElementById("wyniki").appendChild(wypis)
+                                        }
+                                        break;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        var rozjasnianie = 0
+        function zamknijzwyciestwo(toczarne){
+            var jablko = setInterval(parowka,25)
+            function parowka(){
+                if(rozjasnianie==9){
+                    clearInterval(jablko)
+                    rozjasnianie = 0
+                }
+                else{
+                    rozjasnianie++
+                    var zwyciestwo = document.getElementById("ekranzwyciestwa")
+                    zwyciestwo.style.opacity = "0."+rozjasnianie
+                    if(rozjasnianie==9){
+                        zwyciestwo.style.opacity = "1"
+                        zwyciestwo.style.display = "block"
+                    }
+                }
+            }
+        }
+        function ciasteczka(ciasteczko){
+            var tymczasowe = ciasteczko
+            tymczasowe = tymczasowe.split("=")[0]
+            ciasteczko = ciasteczko.split("=")[1]
+            if(ciasteczko==""){
+                document.cookie = tymczasowe+"="+ciasteczko+""+rekord    
+            }
+            else{
+                document.cookie = tymczasowe+"="+ciasteczko+","+rekord
+            }
+            ciasteczko = document.cookie.split(";")
+            ciasteczko = ciasteczko[0]
+            tymczasowe = ciasteczko
+            tymczasowe = tymczasowe.split("=")[0]
+            ciasteczko = ciasteczko.split("=")[1]
+            ciasteczko = ciasteczko.split(",")
+            ciasteczko = ciasteczko.sort(function(a, b){return a>b})
+            if(ciasteczko.length>10){
+                ciasteczko.splice(10,20)
+            }
+            ciasteczko = ciasteczko.join()
+            document.cookie = tymczasowe+"="+ciasteczko+";expires=Thu, 31 Dec 2034 12:00:00 UTC"
+        }
+    </script>
+</body>
+</html>

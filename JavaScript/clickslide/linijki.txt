@@ -1,0 +1,3 @@
+zmiana szybkoœci nie dzia³a mi w pe³ni, bo trochê z timeout'ami pogmatwa³em, ale trochê spowalnia kiedy zmieni siê setInterval na 1000 w linijkach: 211, 249, 289, 299
+
+aby szybko wygraæ wystarczy ustawiæ w linijce 298 warunek losowanieklockow<1, wystarczy wtedy przesun¹æ tylko 2 klocki aby wygraæ
