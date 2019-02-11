@@ -1,0 +1,115 @@
+<!DOCTYPE HTML>
+<html>
+<head> 
+    <meta charset="utf-8"/>
+    <title>TERYT</title>
+    <script>
+        var wojval, powval, gmival
+        function wojewodztwo() {
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var res = JSON.parse(this.responseText)
+                    var select = document.getElementById("woj")
+                    gen(res, select)
+                    if(res.length==1){
+                        powiat()
+                    }
+                }
+            };
+            xhttp.open("GET", "ajax.php?f=1", true);
+            xhttp.send();
+        }
+        function powiat(){
+            var myNode = document.getElementById("mia");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            myNode = document.getElementById("gmi");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            myNode = document.getElementById("pow");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            var valtext = document.getElementById("woj").value
+            wojval = valtext
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var res = JSON.parse(this.responseText)
+                    var select = document.getElementById("pow")
+                    gen(res, select)
+                    if(res.length==1){
+                        gmina()
+                    }
+                }
+            };
+            xhttp.open("GET", "ajax.php?f=2&woj="+wojval, true);
+            xhttp.send();
+        }
+        function gmina(){
+            var myNode = document.getElementById("mia");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            myNode = document.getElementById("gmi");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            var valtext = document.getElementById("pow").value
+            powval = valtext
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var res = JSON.parse(this.responseText)
+                    var select = document.getElementById("gmi")
+                    gen(res, select)
+                    if(res.length==1){
+                        miasto()
+                    }
+                }
+            };
+            xhttp.open("GET", "ajax.php?f=3&woj="+wojval+"&pow="+powval, true);
+            xhttp.send();
+        }
+        function miasto(){
+            var myNode = document.getElementById("mia");
+            while (myNode.firstChild) {
+                myNode.removeChild(myNode.firstChild);
+            }
+            var valtext = document.getElementById("gmi").value
+            gmival = valtext
+            var xhttp = new XMLHttpRequest();
+            xhttp.onreadystatechange = function() {
+                if (this.readyState == 4 && this.status == 200) {
+                    var res = JSON.parse(this.responseText)
+                    var select = document.getElementById("mia")
+                    gen(res, select)
+                }
+            };
+            xhttp.open("GET", "ajax.php?f=4&woj="+wojval+"&pow="+powval+"&gmi="+gmival, true);
+            xhttp.send();
+        }
+        function gen(res, select){
+            for(var i=0;i<res.length;i++){
+                var option = document.createElement("OPTION")
+                var valtext = Object.values(res[i])[0]
+                option.setAttribute("value",valtext)
+                option.innerHTML = valtext
+                select.appendChild(option)
+            }
+        }
+        wojewodztwo()
+    </script>
+</head>
+<body>
+    <div id="baza">
+        <select id="woj" onchange="powiat()"></select>
+        <select id="pow" onchange="gmina()"></select>
+        <select id="gmi" onchange="miasto()"></select>
+        <select id="mia"></select>
+    </div>
+</body>
+</html>
