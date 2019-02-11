@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>kanapka</title>
+	<meta charset="utf-8" />
+    <script src="jquery-3.1.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var div = $("<div>")
+            div.attr("style", "width:600px;height:600px;background:green;")
+            div.attr("id","block")
+            $("body").append(div)
+            $("#bt1").on("click", function () {
+                var x = 0
+                while (x < 3) {
+                    var img = $("<img>")
+                    img.attr("id","img"+x)
+                    $("#block").append(img)
+                    x++
+                }
+                szer.method()
+            })
+        })
+    </script>
+    <script src="skrypt.js"></script>
+    <link href="style.css" rel="stylesheet" />
+</head>
+<body>
+    <button id="bt1">
+        Click me!
+    </button>
+</body>
+</html>

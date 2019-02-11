@@ -1,0 +1,14 @@
+{
+    "name": "mojaaplikacja",
+    "version": "0.0.1",
+    "description": "Aplikacja do logowania informacji",
+    "main": "server.js",
+    "author": {
+        "name": "ja",
+        "email": "ja@email.pl"
+    },
+    "dependencies": {
+        "colors": "^1.1.2",
+        "tracer":  ">0.0.0"
+    }
+}
