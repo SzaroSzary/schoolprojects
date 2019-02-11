@@ -1,0 +1,237 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script src="MyLight.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                fov,
+                res,
+                minrender,
+                maxrender
+                );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0xffffff);
+            renderer.shadowMap.enabled = true
+            renderer.shadowMap.type = THREE.PCFSoftShadowMap;
+            renderer.setSize(szerokosc, wysokosc);
+
+            var geometry = new THREE.PlaneGeometry(1000, 1000, 32);
+            var material = new THREE.MeshPhongMaterial({
+                color: 0xffffff,
+                specular: 0xffffff,
+                shininess: 30,
+                side: THREE.DoubleSide,
+                map: THREE.ImageUtils.loadTexture("img/1.jpg"),
+            })
+            var plane = new THREE.Mesh(geometry, material);
+            plane.rotateX(Math.PI / 2)
+            plane.receiveShadow = true
+            scene.add(plane);
+            document.getElementById("main").appendChild(renderer.domElement);
+
+            var pos = 500
+            camera.position.x = pos 
+            camera.position.y = pos
+            camera.position.z = pos
+            camera.lookAt(plane.position);
+
+            var modelMaterial = new THREE.MeshPhongMaterial({
+                map: THREE.ImageUtils.loadTexture("img/billywork.png"),
+                morphTargets: true,
+            });
+
+            var mixer
+            var loader = new THREE.JSONLoader();
+            loader.load('models/tris.js', function (geometry) {
+                meshModel = new THREE.Mesh(geometry, modelMaterial)
+                meshModel.name = "billy";
+                meshModel.position.y = 51
+                meshModel.rotateY(Math.PI)
+                meshModel.scale.set(2, 2, 2);
+                meshModel.castShadow = true
+                meshModel.receiveShadow = true
+                scene.add(meshModel)
+                mixer = new THREE.AnimationMixer(meshModel);
+                mixer.clipAction("run").play();
+            });
+
+            var clock = new THREE.Clock();
+            function animateScene() {
+                var delta = clock.getDelta();
+                if (mixer) mixer.update(delta)
+                var x = camera.position.x;
+                var z = camera.position.z;
+                var theta = 0.1
+                if (camup) {
+                    camera.position.y += 10
+                    camera.lookAt(meshModel.position);
+                }
+                else if (camdown) {
+                    camera.position.y -= 10
+                    camera.lookAt(meshModel.position);
+                }
+                if (camleft) {
+                    camera.position.x = x * Math.cos(theta) - z * Math.sin(theta)
+                    camera.position.z = z * Math.cos(theta) + x * Math.sin(theta)
+                    camera.lookAt(meshModel.position);
+                }
+                else if (camright) {
+                    camera.position.x = x * Math.cos(theta) + z * Math.sin(theta)
+                    camera.position.z = z * Math.cos(theta) - x * Math.sin(theta)
+                    camera.lookAt(meshModel.position);
+                }
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            color = "0xffffff"
+
+            var lights = []
+            document.getElementById("lightadd").onclick = function () {
+                var light = new MyLight(color, scene)
+                var main = light
+                light = light.getLight();
+                var sign = Math.round(Math.random()) * 2 - 1
+                var posx = Math.floor(Math.random() * 500) *sign
+                var posy = 100
+                var posz = Math.floor(Math.random() * 500) *sign
+                light.position.set(posx, posy, posz)
+                lights.push(light)
+                scene.add(light)
+                var x = document.createElement("DIV")
+                x.setAttribute("style", "width:300px;height:200px;position:absolute;top:"+(lights.length-1)*210+"px;right:0;background:purple;")
+                document.body.appendChild(x)
+                for (var i = 0; i < 3; i++) {
+                    var range = document.createElement("INPUT")
+                    range.setAttribute("type", "range")
+                    range.setAttribute("min", "-500")
+                    range.setAttribute("max", "500")
+                    range.setAttribute("style", "width:100px;height:30px;position:absolute;left:0;top:" + (i * 30) + "px;")
+                    if (i == 0) {
+                        range.id= "x"
+                    }
+                    if (i == 1) {
+                        range.id="y"
+                    }
+                    if (i == 2) {
+                        range.id = "z"
+                    }
+                    x.appendChild(range)
+                    range.oninput = function () {
+                        if (this.id == "x") {
+                            range.setAttribute("min", "-500")
+                            posx = this.value
+                        }
+                        if (this.id == "y") {
+                            posy = this.value
+                        }
+                        if (this.id == "z") {
+                            posz = this.value
+                        }
+                        light.position.set(posx, posy, posz)
+                    }
+                }
+                for (var i = 0; i < 6; i++) {
+                    var y = document.createElement("DIV")
+                    y.setAttribute("style", "width:30px;height:30px;position:absolute;left:" + (i * 30) + "px;top:100px;")
+                    switch (i) {
+                        case 0:
+                            y.style.background = "#ff0000"
+                            y.id = "#ff0000"
+                            break;
+                        case 1:
+                            y.style.background = "#0000ff"
+                            y.id = "#0000ff"
+                            break;
+                        case 2:
+                            y.style.background = "#00ff00"
+                            y.id = "#00ff00"
+                            break;
+                        case 3:
+                            y.style.background = "#ffff00"
+                            y.id = "#ffff00"
+                            break;
+                        case 4:
+                            y.style.background = "#ff00ff"
+                            y.id = "#ff00ff"
+                            break;
+                        case 5:
+                            y.style.background = "#00ffff"
+                            y.id = "#00ffff"
+                            break;
+                    }
+                    x.appendChild(y)
+                    y.onclick = function () {
+                        main.changeLightColor(this.id)
+                    }
+                }
+            }
+
+            animateScene();
+
+            var camleft = false
+            var camright = false
+            var camup = false
+            var camdown = false
+            document.addEventListener("keydown", onKeyDown, false); // naciśnięcie dowolnego klawisza
+            document.addEventListener("keyup", onKeyUp, false); //zwolnienie dowolnego klawisza
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                console.log(keyCode)
+                switch (keyCode) {
+                    case 37:
+                            camleft = true
+                        break;
+                    case 39:
+                        camright = true
+                        break;
+                    case 38:
+                            camup = true
+                        break;
+                    case 40:
+                            camdown = true
+                        break;
+                }
+            }
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 37:
+                        camleft = false
+                        break;
+                    case 39:
+                        camright = false
+                        break;
+                    case 38:
+                        camup = false
+                        break;
+                    case 40:
+                        camdown = false
+                        break;
+                }
+            }
+        })
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="lightadd" style="width:100px;height:30px;background:blue;position:absolute;top:0;left:0;">zmień swiatło</div>
+    <div id="main"></div>
+</body>
+</html>
