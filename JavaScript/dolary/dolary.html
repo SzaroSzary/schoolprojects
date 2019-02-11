@@ -1,0 +1,108 @@
+<html>
+<head>
+<title>test</title>
+<style>
+    #canvas1 {
+        border: 1px black solid;
+    }
+</style>
+</head>
+<body>
+    <canvas width="640px" height="360px" id="canvas1"></canvas>
+    <script>
+        var canvas = document.getElementById("canvas1")
+        var ctx1 = canvas.getContext("2d")
+
+        var sources = {
+            dolar1: "dolar1.png",
+            dolar2: "dolar2.png",
+            dolar3: "dolar3.png"
+        }
+        var loadImages = function (sources, callback) {
+            var images = {}
+            var loadedImages = 0
+            var numImages = 0
+
+            for (var src in sources) {
+                numImages++
+            }
+            for (var src in sources) {
+                images[src] = new Image()
+                images[src].onload = function () {
+                    if (++loadedImages >= numImages) {
+                        callback(images)
+                    }
+                }
+                images[src].src = sources[src]
+            }
+        }
+        var dolar = function(image, x, y, size) {
+            this.image = image,
+            this.x = x,
+            this.y = y,
+            this.size = size
+            this.xoption = 1
+            this.yoption = 1
+        }
+        var objects = []
+        setInterval(function(){
+            var rozmiar = Math.floor(Math.random() * 30) + 10
+            var dolarimg = Math.floor(Math.random() * 3)
+            switch (dolarimg) {
+                case 0:
+                    loadImages(sources, function (images) {
+                        objects.push(new dolar(images.dolar1, Math.floor(Math.random() * 600), Math.floor(Math.random() * 320), rozmiar))
+                    })
+                    break;
+                case 1:
+                    loadImages(sources, function (images) {
+                        objects.push(new dolar(images.dolar2, Math.floor(Math.random() * 600), Math.floor(Math.random() * 320), rozmiar))
+                    })
+                    break;
+                case 2:
+                    loadImages(sources, function (images) {
+                        objects.push(new dolar(images.dolar3, Math.floor(Math.random() * 600), Math.floor(Math.random() * 320), rozmiar))
+                    })
+                    break;
+            }
+        },1000)
+        function animate(){
+            window.requestAnimationFrame(animate)
+            ctx1.clearRect(0,0,640,360)
+            for (var i = 0; i < objects.length; i++){
+                if (objects[i].x == 640 - objects[i].size) {
+                    objects[i].xoption = 2
+                }
+                else if (objects[i].x == 0) {
+                    objects[i].xoption = 1
+                }
+                if (objects[i].y == 360 - objects[i].size) {
+                    objects[i].yoption = 2
+                }
+                else if (objects[i].y == 0) {
+                    objects[i].yoption = 1
+                }
+                switch (objects[i].xoption) {
+                    case 1:
+                        objects[i].x++
+                        break;
+                    case 2:
+                        objects[i].x--
+                        break;
+                }
+                switch (objects[i].yoption) {
+                    case 1:
+                        objects[i].y++
+                        break;
+                    case 2:
+                        objects[i].y--
+                        break;
+                }
+                ctx1.drawImage(objects[i].image,objects[i].x,objects[i].y,objects[i].size,objects[i].size);
+            }
+        }
+        animate()
+
+    </script>
+</body>
+</html>
