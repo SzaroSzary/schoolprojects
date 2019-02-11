@@ -1,0 +1,1 @@
+﻿<%@ Page Language="C#" AutoEventWireup="true" CodeFile="Today.aspx.cs" Inherits="server_Today" %>

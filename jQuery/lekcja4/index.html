@@ -1,0 +1,188 @@
+﻿<!DOCTYPE HTML>
+<html>
+    <head>
+        <meta charset="UTF-8"/>
+        <title>Plan lekcji</title>
+        <link rel="stylesheet" href="css/class.css" />
+        <link rel="stylesheet" href="css/main.css" />
+        <link rel="stylesheet" href="css/settingspanel.css" />
+        <link rel="stylesheet" href="css/todayscreen.css" />
+        <link rel="stylesheet" href="css/weekscreen.css" />
+        <link rel="stylesheet" href="css/databasepanel.css" />
+        <link href="css/sethoursscreen.css" rel="stylesheet" />
+        <link href="css/hoursscreen.css" rel="stylesheet" />
+        <link href="css/dataaddedscreen.css" rel="stylesheet" />
+        <link href="css/datadeletedscreen.css" rel="stylesheet" />
+        <link href="css/tablescreatedscreen.css" rel="stylesheet" />
+        <link href="css/tablesdeletedscreen.css" rel="stylesheet" />
+        <link href="css/datadownloadedscreen.css" rel="stylesheet" />
+        <link href="css/captcha.css" rel="stylesheet" />
+        <link href="css/register.css" rel="stylesheet" />
+        <link href="css/colorspanel.css" rel="stylesheet" />
+        <link href='http://fonts.googleapis.com/css?family=Lekton&subset=latin,latin-ext' rel='stylesheet' type='text/css'/>
+        <script src="libs/jquery-3.1.0.min.js"></script>
+        <script src="js/Settings.js"></script>
+        <script src="js/Ajax.js"></script>
+        <script src="js/UI.js"></script>
+        <script src="js/Zegar.js"></script>
+        <script src="js/Database.js"></script>
+        <script src="js/Hours.js"></script>
+        <script src="js/Days.js"></script>
+        <script src="js/Weeks.js"></script>
+        <script src="js/Captcha.js"></script>
+        <script src="js/Register.js"></script>
+        <script src="js/Colors.js"></script>
+        <script src="js/Main.js"></script>
+        <script>
+            $(document).ready(function () {
+                UI.init()
+                Zegar.init()
+                Captcha.createcaptcha()
+                Captcha.clearcaptcha()
+                Captcha.validatecaptcha()
+                Register.registeroptions()
+                Main.init()
+            })
+        </script>
+    </head>
+    <body>
+        <noscript>
+            <div id="noscript" style="width:100%;height:100%;position:absolute;left:0;top:0;background:black;z-index:15;">
+                <span style="color:white;font-size:8vh;text-align:center;width:100%;position:absolute;">WŁĄCZ OBSŁUGĘ JAVASCRIPT W PRZEGLĄDARCE</span>
+            </div>
+        </noscript>
+        <div id="main">
+            <img src="gfx/lines.png" alt="menu" class="openmenu" />
+            <div id="clock">
+            </div>
+            <div id="menu">
+                <div id="settings" class="menu">
+                    <img src="gfx/settings.png" alt="ustawienia" />
+                    <span>USTAWIENIA</span>
+                </div>
+                <div id="today" class="menu">
+                    <img src="gfx/today.png" alt="dzisiaj" />
+                    <span>DZISIAJ</span>
+                </div>
+                <div id="week" class="menu">
+                    <img src="gfx/calendar.png" alt="tydzień" />
+                    <span>TYDZIEŃ</span>
+                </div>
+            </div>
+        </div>
+        <div id="settingspanel">
+            <span>USTAWIENIA</span>
+            <img src="gfx/cross.png" alt="zamknij" class="closesettings"/>
+            <div id="hours" class="openhoursscreen">
+                <img src="gfx/clock.png" alt="godziny" />
+                <span>GODZINY</span>
+            </div>
+            <div id="colors">
+                <img src="gfx/squares.png" alt="kolory" />
+                <span>KOLORYSTYKA</span>
+            </div>
+            <div id="startingscreen">
+                <img src="gfx/mobile.png" alt="ekran startowy" />
+                <span>EKRAN STARTOWY</span>
+            </div>
+            <div id="database" class="opendatabasepanel">
+                <img src="gfx/briefcase.png" alt="baza danych" />
+                <span>BAZA DANYCH</span>
+            </div>
+        </div>
+        <div id="colorspanel">
+            <span></span>
+            <img src="gfx/cross.png" alt="zamknij" class="closecolorspanel" />
+        </div>
+        <div id="hoursscreen">
+            <span>GODZINY</span>
+            <img src="gfx/cross.png" alt="zamknij" class="close" />
+            <div id="hoursscreencontent">
+            </div>
+        </div>
+        <div id="sethoursscreen">
+            <span>WYBÓR GODZINY</span>
+            <img src="gfx/cross.png" alt="zamknij" class="closesethours" />
+            <img src="gfx/ok.png" alt="zapisz" class="updatehours" />
+            <div id="sethoursinfo">
+            </div>
+            <div id="sethourshours">
+            </div>
+            <div id="sethoursminutes">
+            </div>
+        </div>
+        <div id="todayscreen">
+            <span>DZISIAJ</span>
+            <img src="gfx/cross.png" alt="zamknij" class="close" />
+            <div id="todayscreencontent">
+            </div>
+        </div>
+        <div id="weekscreen">
+            <span>TYDZIEŃ</span>
+            <img src="gfx/cross.png" alt="zamknij" class="close" />
+            <div id="weekscreencontent">
+            </div>
+        </div>
+        <div id="databasepanel">
+            <span>BAZA DANYCH</span>
+            <img src="gfx/cross.png" alt="zamknij" class="closedatabasepanel" />
+            <div id="addtable" class="databasepanel">
+                <img src="gfx/briefcase.png" alt="baza danych" />
+                <span>DODAJ TABELĘ</span>
+            </div>
+            <div id="deletetable" class="databasepanel">
+                <img src="gfx/briefcase.png" alt="baza danych" />
+                <span>USUŃ TABELĘ</span>
+            </div>
+            <div id="adddata" class="databasepanel">
+                <img src="gfx/briefcase.png" alt="baza danych" />
+                <span>DODAJ DANE</span>
+            </div>
+            <div id="deletedata" class="databasepanel">
+                <img src="gfx/briefcase.png" alt="baza danych" />
+                <span>USUŃ DANE</span>
+            </div>
+            <div id="downloaddata" class="databasepanel">
+                <img src="gfx/briefcase.png" alt="baza danych" />
+                <span>POBIERZ DANE</span>
+            </div>
+        </div>
+        <div id="tablescreated">
+        </div>
+        <div id="tablesdeleted">
+        </div>
+        <div id="dataadded">
+        </div>
+        <div id="datadeleted">
+        </div>
+        <div id="datadownloaded">
+        </div>
+        <div id="captcha">
+            <span>CO NIE PASUJE?</span>
+            <div id="captchaoptions">
+            </div>
+            <div id="captchaar">
+                <div id="captchaaccept">
+                    <span>NIE JESTEM ROBOTEM</span>
+                </div>
+                <div id="captchareload">
+                    <img src="gfx/reload.png" alt="odśwież"/>
+                </div>
+            </div>
+        </div>
+        <div id="register">
+            <span>REJESTRACJA I LOGOWANIE</span>
+            <form action="server/Register.aspx">
+                <div id="username">
+                    <span>LOGIN: </span><input type="text" id="logintext"/>
+                </div>
+                <div id="password">
+                    <span>HASŁO: </span><input type="text" id="passwordtext"/>
+                </div>
+                <div id="send">
+                    <span>DALEJ</span>
+                </div>
+            </form>
+        </div>
+    </body>
+</html>

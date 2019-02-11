@@ -1,0 +1,25 @@
+﻿@media only screen and (orientation: landscape) {
+    #hoursscreen{
+        position: absolute;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+    #hoursscreen span{
+        font-size: 8vh;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #hoursscreen{
+        position: absolute;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        z-index:14;
+    }
+    #hoursscreen span{
+        font-size: 8vh;
+    }
+}

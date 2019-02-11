@@ -1,0 +1,63 @@
+﻿@media only screen and (orientation: landscape) {
+    #sethoursscreen{
+        position: absolute;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+    #sethoursscreen span{
+        font-size: 8vh;
+    }
+    #sethoursinfo{
+        font-size: 12vh;
+        width:100%;
+        height:10vh;
+    }
+    #sethourshours{
+        width:100%;
+        position:relative;
+        height:20vh;
+        float:left;
+        top:10%;
+    }
+    #sethoursminutes{
+        width:100%;
+        position:relative;
+        height:20vh;
+        float:left;
+        top:20%;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #sethoursscreen{
+        position: absolute;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        z-index:14;
+    }
+    #sethoursscreen span{
+        font-size: 8vh;
+    }
+    #sethoursinfo{
+        font-size: 12vh;
+        width:100%;
+        height:10vh;
+    }
+    #sethourshours{
+        width:100%;
+        position:relative;
+        height:20vh;
+        float:left;
+        top:10%;
+    }
+    #sethoursminutes{
+        width:100%;
+        position:relative;
+        height:20vh;
+        float:left;
+        top:20%;
+    }
+}

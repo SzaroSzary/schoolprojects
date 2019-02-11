@@ -1,0 +1,114 @@
+﻿@media only screen and (orientation: landscape) {
+    #captcha{
+        width:100%;
+        height:100%;
+        display:block;
+        position:absolute;
+    }
+    #captcha span{
+        width:50%;
+        height:8vh;
+        font-size:8vh;
+        position:absolute;
+        text-align:center;
+        left:25%;
+        top:10%;
+    }
+    #captchaoptions{
+        width:70%;
+        position:relative;
+        height:30%;
+        left:15%;
+        top:20%;
+    }
+    #captchaar{
+        width:70%;
+        position:relative;
+        height:15%;
+        left:15%;
+        top:20%;
+    }
+    #captchaaccept{
+        width:50%;
+        position:absolute;
+        left:0;
+        height:100%;
+        top:0;
+    }
+    #captchaaccept span{
+        font-size:7vh;
+        width:100%;
+        left:0;
+        position:absolute;
+    }
+    #captchareload{
+        width:50%;
+        position:absolute;
+        left:50%;
+        height:100%;
+        top:0;
+    }
+    #captchareload img{
+        width:20%;
+        position:absolute;
+        height:100%;
+        left:40%;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #captcha{
+        width:100%;
+        height:100%;
+        display:block;
+        position:absolute;
+    }
+    #captcha span{
+        width:50%;
+        height:8vh;
+        font-size:8vh;
+        position:absolute;
+        text-align:center;
+        left:25%;
+        top:10%;
+    }
+    #captchaoptions{
+        width:70%;
+        position:relative;
+        height:30%;
+        left:15%;
+        top:20%;
+    }
+    #captchaar{
+        width:70%;
+        position:relative;
+        height:15%;
+        left:15%;
+        top:20%;
+    }
+    #captchaaccept{
+        width:50%;
+        position:absolute;
+        left:0;
+        height:100%;
+        top:0;
+    }
+    #captchaaccept span{
+        font-size:7vh;
+        width:100%;
+        left:0;
+        position:absolute;
+    }
+    #captchareload{
+        width:50%;
+        position:absolute;
+        left:50%;
+        height:100%;
+        top:0;
+    }
+    #captchareload img{
+        width:20%;
+        position:absolute;
+        height:100%;
+        left:40%;
+    }
+}

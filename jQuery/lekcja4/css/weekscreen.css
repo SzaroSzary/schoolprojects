@@ -1,0 +1,41 @@
+﻿@media only screen and (orientation: landscape) {
+    #weekscreen{
+        position: absolute;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+    }
+    #weekscreencontent{
+        position:relative;
+        height:60%;
+        width: 80%;
+        left:10%;
+        top:10%;
+        overflow-y:scroll;
+    }
+    #weekscreen span{
+        font-size: 8vh;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #weekscreen{
+        position: absolute;
+        display: none;
+        width: 100%;
+        height: 100%;
+        text-align: center;
+        font-size: 100px;
+        z-index:14;
+    }
+    #weekscreencontent {
+        position: relative;
+        width: 80%;
+        left: 10%;
+        top:10%;
+        overflow: scroll;
+    }
+    #weekscreen span{
+        font-size: 8vh;
+    }
+}

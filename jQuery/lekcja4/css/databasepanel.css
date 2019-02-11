@@ -1,0 +1,68 @@
+﻿@media only screen and (orientation: landscape) {
+    #databasepanel {
+        position: absolute;
+        left: -100%;
+        width: 40%;
+        height: 100vh;
+        font-size: 8vh;
+        padding-left: 10px;
+    }
+    #databasepanel span{
+        float: left;
+    }
+    #addtable, #deletetable, #adddata, #deletedata, #downloaddata {
+        position: relative;
+        width: 100%;
+        height: 100px;
+        font-size: 5vh;
+        float: left;
+    }
+    #addtable img, #deletetable img, #adddata img, #deletedata img, #downloaddata img{
+        height:80px;
+        width: 80px;
+        position: absolute;
+        top: calc(50% - 40px);
+    }
+    #addtable span, #deletetable span, #adddata span, #deletedata span, #downloaddata span{
+        position: absolute;
+        width: 100%;
+        height: 50px;
+        top: calc(50% - 25px);
+        left: 30%;
+    }
+}
+@media only screen and (orientation: portrait) {
+    #databasepanel{
+        position: absolute;
+        left: -100%;
+        width: 100%;
+        height: 100%;
+        z-index:13;
+    }
+    #databasepanel span{
+        position:relative;
+        float: left;
+        left: 5%;
+        font-size: 8vh;
+    }
+    #addtable, #deletetable, #adddata, #deletedata, #downloaddata{
+        position: relative;
+        width: 100%;
+        height: 200px;
+        float: left;
+    }
+    #addtable img, #deletetable img, #adddata img, #deletedata img, #downloaddata img{
+        height:160px;
+        width: 160px;
+        position: absolute;
+        top: calc(50% - 80px);
+        left: 5%;
+    }
+     #addtable span, #deletetable span, #adddata span, #deletedata span, #downloaddata span{
+        position: absolute;
+        height: 100px;
+        top: calc(50% - 50px);
+        left: 30%;
+        font-size: 5vh;
+    }
+}

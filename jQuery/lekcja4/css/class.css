@@ -1,0 +1,129 @@
+﻿@media only screen and (orientation: landscape) {
+    .close{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .closesettings{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .closedatabasepanel {
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .closecolorspanel {
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+        z-index:50;
+    }
+    .closesethours{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .updatehours{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 7%;
+        top: 2%;
+    }
+    .updatecolors{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 7%;
+        top: 2%;
+    }
+    .returncolors{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 12%;
+        top: 2%;
+    }
+    .openmenu{
+        display:none;
+    }
+}
+@media only screen and (orientation: portrait) {
+    .close{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .closesettings{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .closedatabasepanel {
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .closecolorspanel {
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+        z-index:50;
+    }
+    .closesethours{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 2%;
+        top: 2%;
+    }
+    .updatehours{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 7%;
+        top: 2%;
+    }
+    .updatecolors{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 7%;
+        top: 2%;
+    }
+    .returncolors{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        right: 12%;
+        top: 2%;
+    }
+    .openmenu{
+        width: 8vh;
+        height: 8vh;
+        position: absolute;
+        left: 2%;
+        top: 2%;
+        z-index:12;
+    }
+}
