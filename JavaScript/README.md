@@ -1,1 +1,1 @@
-Projects created in JavaScript.
+Projects created in JavaScript. The latest and the biggest one is Montezuma's Revenge. It's my attempt to recreate a few basic mechanics from the Atari game titled "Montezuma's Revenge". It was my final project in 3rd grade of technical school. Despite not finishing, I'm still proud of this project.
