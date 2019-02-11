@@ -1,0 +1,1018 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>DRATEWKA THE SHOEMAKER</title>
+    <meta charset="UTF-8"/>
+    <style>
+        @font-face {
+            font-family: PressStart2P;
+            src: url(fonts/PressStart2P.ttf);
+        }
+        input:focus {
+            outline: none;
+        }
+    </style>
+</head>
+<body>
+    <script>
+        document.body.setAttribute("style","margin:0;padding:0;background-color:black;")
+        function _Lokacja(){
+            this.miejsce=arguments[0]
+        }
+        var gra = {
+            item: [
+                0,
+                ,
+            ],
+            north:"NORTH",
+            east:"EAST",
+            south:"SOUTH",
+            west:"WEST",
+            carried: "0",
+            homeloc:"0",
+            sheepcounter:0,
+            done:false,
+            prize:false,
+            x:6,
+            y:3,
+            locked: false,
+            komunikaty: [
+                "You are going north...",
+                "You are going east...",
+                "You are going south...",
+                "You are going west...",
+                "You can't go that way",
+                "You are taking ",
+                "You can't carry it",
+                "There isn't anything like that here",
+                "You can't store any more here",
+                "You are about to drop ",
+                "You are not carrying it",
+                "You aren't carrying anything like that",
+                "Nothing happened",
+                "You are not carrying anything",
+                "You can't store any more here",
+                "You are about to drop ",
+                "You are carrying something ",
+                "You are not carrying it",
+                "You aren't carrying anything like that",
+                "Nothing happened",
+                "You opened a tool shed and took an axe",
+                "You cut sticks for sheeplegs",
+                "You prepared legs for your fake sheep",
+                "The tavern owner paid you money",
+                "The cooper sold you a new barrel",
+                "You made a nice sheeptrunk",
+                "The butcher gave you wool",
+                "You prepared skin for your fake sheep",
+                "You used your tools to make a rag",
+                "You made a fake sheephead",
+                "You are digging...",
+                "and digging...",
+                "That's enough sulphur for you",
+                "You prepared a solid poison",
+                "You got a bucket full of tar",
+                "You prepared a liquid poison",
+                "Your fake sheep is full of poison and ready to be eaten by the dragon",
+                "The dragon noticed your gift...",
+                "The dragon ate your sheep and died!",
+                "You cut a piece of dragon's skin",
+                "You used your tools to make shoes",
+                "The King is impressed by your shoes",
+                "You can't go that way...",
+                "The dragon sleeps in a cave!",
+                "Try another word or V for vocabulary"
+            ],
+            przedmioty: [
+                "nothing,0,nothing",
+                "a KEY,1,KEY",
+                "an AXE,1,AXE",
+                "STICKS,1,STICKS",
+                "sheeplegs,0,sheeplegs",
+                "MUSHROOMS,1,MUSHROOMS",
+                "MONEY,1,MONEY",
+                "a BARREL,1,BARREL",
+                "a sheeptrunk,0,sheeptrunk",
+                "BERRIES,1,BERRIES",
+                "WOOL,1,WOOL",
+                "a sheepskin,0,sheepskin",
+                "a BAG,1,BAG",
+                "a RAG,1,RAG",
+                "a sheephead,0,sheephead",
+                "a SPADE,1,SPADE",
+                "SULPHUR,1,SULPHUR",
+                "a solid poison,0,solid poison",
+                "a BUCKET,1,BUCKET",
+                "TAR,1,TAR",
+                "a liquid poison,0,liquid poison",
+                "a dead dragon,0,dead dragon",
+                "a STONE,1,STONE",
+                "FISH,1,FISH",
+                "a KNIFE,1,KNIFE",
+                "a DRAGONSKIN,1,DRAGONSKIN",
+                "a dragonskin SHOES,1,SHOES",
+                "a PRIZE,1,PRIZE",
+                "a SHEEP,1,SHEEP",
+            ],
+            vocexists: false,
+            vocabularyscreen: function(){
+                if(gra.vocexists){
+                    gra.vocexists = false
+                }
+                else{
+                    var vocabulary = document.createElement("DIV")
+                    vocabulary.setAttribute("style","width:800px;height:150px;background:black;position:absolute;left:10%;top:265px;z-index:20;color:grey;font-family:PressStart2P;font-size:20px;")
+                    vocabulary.setAttribute("id","vocabulary")
+                    vocabulary.innerHTML = "NORTH or N, SOUTH or S<br/> WEST or W, EAST or E <br/> TAKE (object) or T (object)<br/> DROP (object) or D (object)<br/> USE (object) or U (object) <br/> GOSSIPS or G, VOCABULARY or V <br/>Press any key"
+                    document.body.appendChild(vocabulary)
+                    gra.vocexists = true
+                }
+            },
+            gosexists: false,
+            gossipsscreen: function(){
+                if(gra.gosexists){
+                    gra.gosexists = false
+                }
+                else{
+                    var gossips = document.createElement("DIV")
+                    gossips.setAttribute("style","width:800px;height:150px;background:black;position:absolute;left:10%;top:265px;z-index:20;color:grey;font-family:PressStart2P;font-size:20px;")
+                    gossips.setAttribute("id","gossips")
+                    gossips.innerHTML = "The  woodcutter lost  his home key... <br/>The butcher likes fruit... The cooper <br/>is greedy... Dratewka plans to make a <br/>poisoned  bait for the dragon...  The <br/>tavern owner is buying food  from the <br/>pickers... Making a rag from a bag... <br/>Press any key"
+                    document.body.appendChild(gossips)
+                    gra.gosexists = true
+                }
+            },
+            lokacja: [
+                [
+                    new _Lokacja("You are inside a brimstone mine;11.gif;rgb(235,211,64);0;1;0;0;0"),
+                    new _Lokacja("You are at the entrance to the mine;12.gif; rgb(89,93,87);0;1;0;1;0"),
+                    new _Lokacja("A hill;13.gif;rgb(117,237,243);0;1;1;1;22"),
+                    new _Lokacja("Some bushes;14.gif;rgb(202,230,51);0;1;0;1;0"),
+                    new _Lokacja("An old deserted hut;15.gif;rgb(220,204,61);0;1;0;1;18"),
+                    new _Lokacja("The edge of a forest;16.gif;rgb(167,245,63);0;1;0;1;0"),
+                    new _Lokacja("A dark forest;17.gif;rgb(140,253,99);0;0;1;1;5")
+                ],
+                [
+                    new _Lokacja("A man nearby making tar;21.gif;rgb(255,190,99);0;1;1;0;0"),
+                    new _Lokacja("A timber yard;22.gif;rgb(255,190,99);0;1;1;1;0"),
+                    new _Lokacja("You are by a roadside shrine;23.gif;rgb(167,245,63);1;1;1;1;1"),
+                    new _Lokacja("You are by a small chapel;24.gif;rgb(212,229,36);0;1;0;1;0"),
+                    new _Lokacja("You are on a road leading to a wood;25.gif;rgb(167,245,63);0;1;1;1;0"),
+                    new _Lokacja("You are in a forest;26 i 65.gif;rgb(167,245,63);0;1;0;1;0"),
+                    new _Lokacja("You are in a deep forest;27 i 67.gif;rgb(140,253,99);1;0;0;1;9")
+                ],
+                [
+                    new _Lokacja("You are by the Vistula River;31.gif;rgb(122,232,252);1;1;0;0;0"),
+                    new _Lokacja("You are by the Vistula River;32.gif;rgb(140,214,255);1;0;0;1;23"),
+                    new _Lokacja("You are on a bridge over river;33.gif;rgb(108,181,242);1;0;1;0;0"),
+                    new _Lokacja("You are by the old tavern;34.gif;rgb(255,189,117);0;1;0;0;0"),
+                    new _Lokacja("You are at the town's end;35.gif;rgb(255,190,99);1;0;1;1;0"),
+                    new _Lokacja("You are in a butcher's shop;36.gif;rgb(255,188,102);0;0;1;0;0"),
+                    new _Lokacja("You are in a cooper's house;37.gif;rgb(255,188,102);0;0;1;0;0"),
+                ],
+                [
+                    new _Lokacja("You are in the Wawel Castle;41.gif;rgb(255,176,141);0;1;0;0;0"),
+                    new _Lokacja("You are inside a dragon's cave;42.gif;rgb(198,205,193);0;1;0;1;0"),
+                    new _Lokacja("A perfect place to set a trap;43.gif;rgb(255,176,141);1;0;0;1;0"),
+                    new _Lokacja("You are by the water mill;44.gif;rgb(255,190,99);0;1;0;0;12"),
+                    new _Lokacja("You are at a main crossroad;45.gif;rgb(255,190,99);1;1;1;1;0"),
+                    new _Lokacja("You are on a town street;46.gif;rgb(255,190,99);1;1;0;1;0"),
+                    new _Lokacja("You are in a frontyard of your house;47.gif;rgb(255,190,99);1;0;1;1;0")
+                ],
+                [
+                    new _Lokacja(""),
+                    new _Lokacja(""),
+                    new _Lokacja(""),
+                    new _Lokacja("You are by a swift stream;54.gif;rgb(108,181,242);0;1;0;0;0"),
+                    new _Lokacja("You are on a street leading forest;55.gif;rgb(255,190,99);1;0;1;1;24"),
+                    new _Lokacja("You are in a woodcutter's backyard;56.gif;rgb(255,190,99);0;0;1;0;0"),
+                    new _Lokacja("You are in a shoemaker's house;57.gif;rgb(254,194,97);1;0;0;0;0"),
+                ],
+                [
+                    new _Lokacja(""),
+                    new _Lokacja(""),
+                    new _Lokacja(""),
+                    new _Lokacja("You are in a bleak funeral house;64.gif;rgb(254,194,97);0;1;0;0;15"),
+                    new _Lokacja("You are on a path leading to the wood;26 i 65.gif;rgb(167,245,63);1;1;0;1;0"),
+                    new _Lokacja("You are at the edge of a forest;66.gif;rgb(167,245,63);1;1;0;1;0"),
+                    new _Lokacja("You are in a deep forest;27 i 67.gif;rgb(140,253,99);0;0;0;1;0"),
+                ]
+            ],
+            intro: function(){
+                var audio = document.createElement("AUDIO")
+                audio.setAttribute("autoplay","autoplay")
+                document.body.appendChild(audio)
+                var source = document.createElement("SOURCE")
+                source.src = "mp3/hejnal.mp3"
+                audio.appendChild(source)
+                var intro = document.createElement("IMG")
+                intro.src = "img/intro.jpg"
+                intro.setAttribute("style","width:750px;height:400px;position:absolute;left:9%;z-index:20;")
+                document.body.appendChild(intro)
+                setTimeout(function(){
+                    intro.parentNode.removeChild(intro)
+                    intro.src = "img/opis_A.jpg"
+                    intro.setAttribute("style","width:750px;height:400px;position:absolute;left:9%;z-index:20;")
+                    document.body.appendChild(intro)
+                    setTimeout(function(){
+                        intro.parentNode.removeChild(intro)
+                        intro.src = "img/opis_B.jpg"
+                        intro.setAttribute("style","width:750px;height:400px;position:absolute;left:9%;z-index:20;")
+                        document.body.appendChild(intro)
+                        setTimeout(function(){
+                            intro.parentNode.removeChild(intro)
+                        }, 13000)
+                    }, 21000)
+                }, 5000)
+            },
+            tworz_lokacje: function(){
+                var banan = this.lokacja[this.y][this.x].miejsce
+                banan= banan.split(";")
+                var opis = banan[0]
+                var plik = banan[1]
+                var kolor = banan[2]
+                var polnoc = banan[3]
+                var wschod = banan[4]
+                var poludnie = banan[5]
+                var zachod = banan[6]
+                gra.item = banan[7]
+                if(document.getElementById("picture")){
+                    document.getElementById("picture").setAttribute("style","width:300px;height:200px;background-color:"+kolor+";position:absolute;left:10%;top:50px;")
+                    document.getElementById("picture").src = "img/"+plik
+                    document.getElementById("info").innerHTML = ""+opis
+                    var element = document.getElementById("pytanie")
+                    element.parentNode.removeChild(element)
+                    var menu = document.getElementById("menu")
+                    menu.parentNode.removeChild(menu)
+                    var pytanie = document.createElement("INPUT")
+                    pytanie.setAttribute("type","text")
+                    pytanie.setAttribute("style","width:500px;left:calc(10% + 160px);height:20px;background:black;border:none;border-color:transparent;position:relative;color:grey;font-family:PressStart2P;font-size:20px;padding-top:0;")
+                    pytanie.setAttribute("id","pytanie")
+                    pytanie.setAttribute("onkeydown","gra.start()")
+                    document.getElementById("choice").appendChild(pytanie)
+                    gra.updatetext(polnoc,wschod,poludnie,zachod)
+                }
+                else{
+                    var picture = document.createElement("IMG")
+                    picture.id = "picture"
+                    picture.setAttribute("style","width:300px;height:200px;background-color:"+kolor+";position:absolute;left:10%;top:50px;")
+                    picture.src = "img/"+plik
+                    document.body.appendChild(picture)
+                    var info = document.createElement("DIV")
+                    info.id = "info"
+                    info.setAttribute("style","height:50px;position:absolute;top:15px;left:10%;color:grey;font-family:PressStart2P;font-size:20px;")
+                    info.innerHTML = ""+opis
+                    document.body.appendChild(info)
+                    var choice = document.createElement("DIV")
+                    choice.setAttribute("id","choice")
+                    choice.setAttribute("style","width:300px;height:50px;position:absolute;left:10%;top:360px;font-family:PressStart2P;font-size:20px;color:grey;")
+                    choice.innerHTML = "<div style='position:absolute;float:left;'>What now?</div>"
+                    document.body.appendChild(choice)
+                    var kompas = document.createElement("IMG")
+                    kompas.setAttribute("id","kompas")
+                    kompas.setAttribute("style","width:300px;height:200px;position:absolute;left:calc(10% + 400px);top:50px;")
+                    kompas.src = "img/kompas.bmp"
+                    document.body.appendChild(kompas)
+                    var pytanie = document.createElement("INPUT")
+                    pytanie.setAttribute("type","text")
+                    pytanie.setAttribute("style","width:500px;left:calc(10% + 160px);height:20px;background:black;border:none;border-color:transparent;position:relative;color:grey;font-family:PressStart2P;font-size:20px;padding-top:0;")
+                    pytanie.setAttribute("id","pytanie")
+                    pytanie.setAttribute("onkeydown","gra.start()")
+                    pytanie.focus()
+                    document.getElementById("choice").appendChild(pytanie)
+                    gra.updatetext(polnoc,wschod,poludnie,zachod)
+                }
+            },
+            updatetext: function(polnoc,wschod,poludnie,zachod){
+                var menu = document.createElement("DIV")
+                menu.setAttribute("id","menu")
+                menu.setAttribute("style","height:300px;position:absolute;left:10%;top:270px;color:grey;font-family:PressStart2P;font-size:20px;")
+                document.body.appendChild(menu)
+                if(document.getElementById("north")){
+                    var north = document.getElementById("north")
+                    north.parentNode.removeChild(north)
+                }
+                if(document.getElementById("east")){
+                    var east = document.getElementById("east")
+                    east.parentNode.removeChild(east)
+                }
+                if(document.getElementById("south")){
+                    var south = document.getElementById("south")
+                    south.parentNode.removeChild(south)
+                }
+                if(document.getElementById("west")){
+                    var west = document.getElementById("west")
+                    west.parentNode.removeChild(west)
+                }
+                for(var x=7;x<10;x++){
+                    var menuinf = document.createElement("DIV")
+                    menuinf.setAttribute("id","inf"+x)
+                    menuinf.setAttribute("style","height:30px;position:relative;")
+                    var north = document.createElement("DIV")
+                    var east = document.createElement("DIV")
+                    var south = document.createElement("DIV")
+                    var west = document.createElement("DIV")
+                    if(x==7){
+                        var kierunki = ""
+                        if(polnoc == 1){
+                            kierunki=kierunki+gra.north+", "
+                        }
+                        else{
+                            north.setAttribute("style","width:20px;height:20px;position:absolute;left:calc(10% + 530px);top:51px;background:black;")
+                            north.setAttribute("id","north")
+                            document.body.appendChild(north)
+                        }
+                        if(wschod == 1){
+                            kierunki=kierunki+gra.east+", "
+                        }
+                        else{
+                            east.setAttribute("style","width:20px;height:20px;position:absolute;left:calc(10% + 665px);top:108px;background:black;")
+                            east.setAttribute("id","east")
+                            document.body.appendChild(east)
+                        }
+                        if(poludnie == 1){
+                            kierunki=kierunki+gra.south+", "
+                        }
+                        else{
+                            south.setAttribute("style","width:20px;height:20px;position:absolute;left:calc(10% + 537px);top:225px;background:black;")
+                            south.setAttribute("id","south")
+                            document.body.appendChild(south)
+                        }
+                        if(zachod == 1){
+                            kierunki=kierunki+gra.west+", "
+                        }
+                        else{
+                            west.setAttribute("style","width:20px;height:20px;position:absolute;left:calc(10% + 413px);top:108px;background:black;")
+                            west.setAttribute("id","west")
+                            document.body.appendChild(west)
+                        }
+                        kierunki = kierunki.slice(0,kierunki.length-2)
+                        menuinf.innerHTML = "You can go "+kierunki
+                    }
+                    if(x==8){
+                        var count = gra.item.split(",")
+                        var item1 = count[0]
+                        var item2 = count[1]
+                        var item3 = count[2]
+                        var homelocitems = gra.homeloc.split(",")
+                        var polaczenie =""
+                        for(var i=1;i<homelocitems.length;i++){
+                            polaczenie = gra.przedmioty[homelocitems[i-1]].split(",")[0]+", "+polaczenie
+                        }
+                        polaczenie = polaczenie.slice(0,polaczenie.length-2)
+                        if(count.length==1){
+                            if(this.y+""+this.x=="32"){
+                                if(gra.sheepcounter>0 && item1=="0"){
+                                    menuinf.innerHTML = "You see "+polaczenie
+                                }
+                                else if(gra.sheepcounter>0 && item1!="0"){
+                                    menuinf.innerHTML = "You see "+polaczenie+" and "+gra.przedmioty[item1].split(",")[0]
+                                }
+                                else{
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item1].split(",")[0]
+                                }
+                            }
+                            else{
+                                menuinf.innerHTML = "You see "+gra.przedmioty[item1].split(",")[0]
+                            }
+                        }
+                        else if(count.length==2){
+                            if(this.y+""+this.x=="32"){
+                                if(gra.sheepcounter>0 && item1=="0"){
+                                    menuinf.innerHTML = "You see "+polaczenie+" and "+gra.przedmioty[item2].split(",")[0]
+                                }
+                                else if(gra.sheepcounter>0 && item1!="0"){
+                                    menuinf.innerHTML = "You see "+polaczenie+", "+gra.przedmioty[item1].split(",")[0]+" and "+gra.przedmioty[item2].split(",")[0]
+                                }
+                                else{
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item1].split(",")[0]+" and "+gra.przedmioty[item2].split(",")[0]
+                                }
+                            }
+                            else{
+                                if(item1 == "0"){
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item2].split(",")[0]
+                                }
+                                else{
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item1].split(",")[0]+" and "+gra.przedmioty[item2].split(",")[0]
+                                }
+                            }
+                        }
+                        else if(count.length==3){
+                            if(this.y+""+this.x=="32"){
+                                if(gra.sheepcounter>0 && item1=="0"){
+                                    menuinf.innerHTML = "You see "+polaczenie+", "+gra.przedmioty[item2].split(",")[0]+" and "+gra.przedmioty[item3].split(",")[0] 
+                                }
+                                else if(gra.sheepcounter>0 && item2=="0"){
+                                    menuinf.innerHTML = "You see "+polaczenie+", "+gra.przedmioty[item1].split(",")[0]+" and "+gra.przedmioty[item3].split(",")[0] 
+                                }
+                                else{
+                                    menuinf.innerHTML = "You see "+polaczenie+", "+gra.przedmioty[item1].split(",")[0]+", "+gra.przedmioty[item2].split(",")[0]+" and "+gra.przedmioty[item3].split(",")[0] 
+                                }
+                            }
+                            else{
+                                if(item1=="0"){
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item2].split(",")[0]+" and "+gra.przedmioty[item3].split(",")[0] 
+                                }
+                                else if(item2=="0"){
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item1].split(",")[0]+" and "+gra.przedmioty[item3].split(",")[0] 
+                                }
+                                else{
+                                    menuinf.innerHTML = "You see "+gra.przedmioty[item1].split(",")[0]+", "+gra.przedmioty[item2].split(",")[0]+" and "+gra.przedmioty[item3].split(",")[0] 
+                                }
+                            }                       
+                        }
+                    }
+                    if(x==9){
+                        menuinf.innerHTML = "You are carrying "+gra.przedmioty[gra.carried].split(",")[0]
+                    }
+                    document.getElementById("menu").appendChild(menuinf)
+                }
+            },
+            gameinfo: function(x){
+                gra.locked = true
+                var info = document.createElement("DIV")
+                info.setAttribute("id","gameinfo")
+                info.setAttribute("style","width:800px;height:30px;position:absolute;left:10%;top:360px;font-family:PressStart2P;font-size:20px;color:grey;background:black;display:block;z-index:15;")
+                info.innerHTML = x+""
+                document.body.appendChild(info)
+                setTimeout(function(){
+                    var gameinfo = document.getElementById("gameinfo")
+                    gameinfo.parentNode.removeChild(gameinfo)
+                    gra.locked = false
+                }, 750)
+                document.getElementById("pytanie").focus()
+            },
+            replace: function(last, text){
+                    if(text>=65 && text<=90){
+                        last = last.toLowerCase()
+                        text = text+32
+                    }
+                    else if(text>=97 && text<=122){
+                        last = last.toUpperCase()
+                        text = text-32
+                    }
+                var stringelement = document.getElementById("pytanie").value
+                stringelement = stringelement.slice(0,stringelement.length-1)+last+""
+                document.getElementById("pytanie").value = stringelement
+            },
+            start: function(){
+                if(gra.prize == false){
+                    this.tworz_lokacje()
+                    document.getElementById("pytanie").focus()
+                    var that=this
+                    document.getElementById("pytanie").onkeypress = function(e){
+                        var text = e.which
+                        document.getElementById("pytanie").oninput = function(){
+                            var last = document.getElementById("pytanie").value
+                            last = last[last.length-1]
+                            gra.replace(last, text)
+                        }
+                    }
+                    document.getElementById("pytanie").onkeydown = function(e){
+                        if(gra.locked == false){
+                            if(e.which==13){
+                                gra.keypress(e, that)
+                            }
+                            else{
+                                if(gra.vocexists){
+                                    var voc = document.getElementById("vocabulary")
+                                    voc.parentNode.removeChild(voc)
+                                    gra.vocabularyscreen()
+                                }
+                                if(gra.gosexists){
+                                    var gos = document.getElementById("gossips")
+                                    gos.parentNode.removeChild(gos)
+                                    gra.gossipsscreen()
+                                }
+                            }
+                        }
+                        else{
+                            e.preventDefault();
+                        }
+                    }
+                }
+            },
+            keypress: function(e, that){
+                var mozliwosc = that.lokacja[that.y][that.x].miejsce
+                mozliwosc = mozliwosc.split(";")
+                var x = document.getElementById("pytanie").value
+                if(gra.vocexists){
+                    var voc = document.getElementById("vocabulary")
+                    voc.parentNode.removeChild(voc)
+                    gra.vocabularyscreen()
+                }
+                if(gra.gosexists){
+                    var gos = document.getElementById("gossips")
+                    gos.parentNode.removeChild(gos)
+                    gra.gossipsscreen()
+                }
+                if((x=='W' || x=="WEST")){
+                    if(this.y+""+this.x=="31"){
+                        if(!gra.done){
+                            gra.gameinfo(gra.komunikaty[42])
+                            setTimeout(function(){
+                            gra.gameinfo(gra.komunikaty[43])},2000)
+                        }
+                        else if(mozliwosc[6]==1){
+                            x = ''
+                            gra.gameinfo(gra.komunikaty[3])
+                            that.x-- 
+                        }
+                    }
+                    else if(mozliwosc[6]==1){
+                        x = ''
+                        gra.gameinfo(gra.komunikaty[3])
+                        that.x-- 
+                    }
+                    else{
+                        gra.gameinfo(gra.komunikaty[4])
+                    }
+                }
+                else if((x=='N' || x=="NORTH")){
+                    if(mozliwosc[3]==1){
+                        x = ''
+                        gra.gameinfo(gra.komunikaty[0])
+                        that.y--
+                    }
+                    else{
+                        gra.gameinfo(gra.komunikaty[4])
+                    }
+                }
+                else if((x=='E' || x=="EAST")){
+                    if(mozliwosc[4]==1){
+                        x = ''
+                        gra.gameinfo(gra.komunikaty[1])
+                        that.x++  
+                    }
+                    else{
+                        gra.gameinfo(gra.komunikaty[4])
+                    }
+                }
+                else if((x=='S' || x=="SOUTH")){
+                    if(mozliwosc[5]==1){
+                        x = ''
+                        gra.gameinfo(gra.komunikaty[2])
+                        that.y++
+                    }
+                    else{
+                        gra.gameinfo(gra.komunikaty[4])
+                    }
+                }
+                else if(x.slice(0,2)=="T " || (x.slice(0,5)=="TAKE ")){
+                    var przedmiot = mozliwosc[7]
+                    var item1 = 0
+                    var item2 = 0
+                    var item3 = 0
+                    var count = gra.item.split(",")
+                    var itemlength = 0
+                    for(var j=0;j<count.length;j++){
+                        if(item1 ==0){
+                            if(gra.przedmioty[count[j]].split(",")[1]==1){
+                                item1 = count[j]
+                                itemlength++
+                            }
+                        }
+                        else if(item2 ==0){
+                            if(gra.przedmioty[count[j]].split(",")[1]==1){
+                                item2 = count[j]
+                                itemlength++
+                            }
+                        }
+                        else if(item3 ==0){
+                            if(gra.przedmioty[count[j]].split(",")[1]==1){
+                                item3 = count[j]
+                                itemlength++
+                            }
+                        }
+                    }
+                    var i=0
+                    if(i<1){
+                        while(i<1){
+                            if(x.slice(2,x.length)==gra.przedmioty[item1].split(",")[2] || x.slice(5,x.length)==gra.przedmioty[item1].split(",")[2]){
+                                if(gra.przedmioty[item1].split(",")[1]==1){
+                                    if(gra.carried == 0){
+                                        przedmiot = gra.przedmioty[item1]
+                                        gra.gameinfo(gra.komunikaty[5]+przedmiot.split(",")[0])
+                                        gra.carried = item1
+                                        if(itemlength==1){
+                                            count = 0
+                                        }
+                                        else if(itemlength==2){
+                                            count = item2
+                                        }
+                                        else if(itemlength==3){
+                                            count = item2 +","+item3
+                                        }
+                                        mozliwosc[7] = count
+                                        mozliwosc = mozliwosc.join(";")
+                                        that.lokacja[that.y][that.x].miejsce = mozliwosc
+                                        break
+                                    }
+                                    else{
+                                        gra.gameinfo(gra.komunikaty[16])
+                                    }
+                                }
+                                else{
+                                    gra.gameinfo(gra.komunikaty[6])
+                                }
+                            }
+                            else{
+                                if(x.slice(2,x.length)==gra.przedmioty[item2].split(",")[2] || x.slice(5,x.length)==gra.przedmioty[item2].split(",")[2]){
+                                    if(gra.przedmioty[item2].split(",")[1]==1){
+                                        if(gra.carried == 0){
+                                            przedmiot = gra.przedmioty[item2]
+                                            gra.gameinfo(gra.komunikaty[5]+przedmiot.split(",")[0])
+                                            gra.carried = item2
+                                            if(itemlength==2){
+                                                count = item1
+                                            }
+                                            else if(itemlength==3){
+                                                count = item1 +","+item3
+                                            }
+                                            mozliwosc[7] = count
+                                            mozliwosc = mozliwosc.join(";")
+                                            that.lokacja[that.y][that.x].miejsce = mozliwosc
+                                            break  
+                                        }
+                                        else{
+                                            gra.gameinfo(gra.komunikaty[16])
+                                        }
+                                    }
+                                    else{
+                                        gra.gameinfo(gra.komunikaty[6])
+                                    }
+                                }
+                                else{
+                                    if(x.slice(2,x.length)==gra.przedmioty[item3].split(",")[2] || x.slice(5,x.length)==gra.przedmioty[item3].split(",")[2]){
+                                        if(gra.przedmioty[item3].split(",")[1]==1){
+                                            if(gra.carried == 0){
+                                                przedmiot = gra.przedmioty[item1]
+                                                gra.gameinfo(gra.komunikaty[5]+przedmiot.split(",")[0])
+                                                gra.carried = item3
+                                                count = item1 +","+item2
+                                                mozliwosc[7] = count
+                                                mozliwosc = mozliwosc.join(";")
+                                                that.lokacja[that.y][that.x].miejsce = mozliwosc
+                                                break
+                                            }
+                                            else{
+                                                gra.gameinfo(gra.komunikaty[16])
+                                            }
+                                        }
+                                        else{
+                                            gra.gameinfo(gra.komunikaty[6])
+                                        } 
+                                    }
+                                    else{
+                                        gra.gameinfo(gra.komunikaty[7])
+                                    }
+                                }
+                            }
+                            i++
+                        }
+                    }
+                }
+                else if((x.slice(0,2)=="D ") || (x.slice(0,5)=="DROP ")){
+                    var count = gra.item.split(",")
+                    var item1 = count[0]
+                    var item2 = count[1]
+                    var itemlength = count.length
+                    var i=0
+                    if(i<1){
+                        while(i<1){
+                            if(gra.carried == 0){
+                                gra.gameinfo(gra.komunikaty[13])
+                            }
+                            else{
+                                if(mozliwosc[7].split(",").length>=3){
+                                    gra.gameinfo(gra.komunikaty[14])
+                                }
+                                else{
+                                    switch(x.slice(0,1)){
+                                        case "D":
+                                            if(x.slice(2,x.length)!=gra.przedmioty[gra.carried].split(",")[2]){
+                                                gra.gameinfo(gra.komunikaty[17])
+                                            }
+                                            else{
+                                                var przedmiot = gra.carried
+                                                gra.gameinfo(gra.komunikaty[15]+gra.przedmioty[przedmiot].split(",")[0])
+                                                gra.carried = 0
+                                                if(that.y+""+that.x =="32"){
+                                                    if(itemlength==1){
+                                                        if(count[0]=="0"){
+                                                            count = przedmiot
+                                                        }
+                                                        else{
+                                                            count = item1+","+przedmiot
+                                                        }
+                                                    }
+                                                    else if(itemlength==2){
+                                                        if(item2 ==""){
+                                                        count = item1+","+przedmiot
+                                                        }
+                                                        else{
+                                                        count = item1 +","+item2+","+przedmiot
+                                                        }
+                                                    }
+                                                }
+                                                else{
+                                                    if(itemlength==0){
+                                                        count = przedmiot
+                                                    }
+                                                    else if(itemlength==1){
+                                                        count = item1+","+przedmiot
+                                                    }
+                                                    else if(itemlength>=2){
+                                                        count = item1 +","+item2+","+przedmiot
+                                                    }
+                                                }
+                                                mozliwosc[7] = count
+                                                mozliwosc = mozliwosc.join(";")
+                                                that.lokacja[that.y][that.x].miejsce = mozliwosc
+                                                break
+                                            }
+                                            break
+                                    }
+                                    switch(x.slice(0,4)){
+                                        case "DROP":
+                                            if(x.slice(5,x.length)!=gra.przedmioty[gra.carried].split(",")[2]){
+                                                gra.gameinfo(gra.komunikaty[17])
+                                            }
+                                            else{
+                                                var przedmiot = gra.carried
+                                                gra.gameinfo(gra.komunikaty[15]+gra.przedmioty[przedmiot].split(",")[0])
+                                                gra.carried = 0
+                                                if(that.y+""+that.x =="32"){
+                                                    if(itemlength==1){
+                                                        if(count[0]=="0"){
+                                                            count = przedmiot
+                                                        }
+                                                        else{
+                                                            count = item1+","+przedmiot
+                                                        }
+                                                    }
+                                                    else if(itemlength==2){
+                                                        if(item2 ==""){
+                                                        count = item1+","+przedmiot
+                                                        }
+                                                        else{
+                                                        count = item1 +","+item2+","+przedmiot
+                                                        }
+                                                    }
+                                                }
+                                                else{
+                                                    if(itemlength==0){
+                                                        count = przedmiot
+                                                    }
+                                                    else if(itemlength==1){
+                                                        count = item1+","+przedmiot
+                                                    }
+                                                    else if(itemlength>=2){
+                                                        count = item1 +","+item2+","+przedmiot
+                                                    }
+                                                }
+                                                mozliwosc[7] = count
+                                                mozliwosc = mozliwosc.join(";")
+                                                that.lokacja[that.y][that.x].miejsce = mozliwosc
+                                                break
+                                            }
+                                            break
+                                    }
+                                }
+                            }
+                            i++
+                        }
+                    }
+                }
+                else if((x.slice(0,2)=="U ") || (x.slice(0,4)=="USE ")){
+                    if(gra.carried == 0){
+                        gra.gameinfo(gra.komunikaty[13])
+                    }
+                    else{
+                        switch(x.slice(0,2)){
+                            case "U ":
+                                if(x.slice(2,x.length)!=gra.przedmioty[gra.carried].split(",")[2]){
+                                    gra.gameinfo(gra.komunikaty[17])
+                                }
+                                else{
+                                    gra.useevents()
+                                }
+                                break
+                        }
+                        switch(x.slice(0,3)){
+                            case "USE":
+                                if(x.slice(4,x.length)!=gra.przedmioty[gra.carried].split(",")[2]){
+                                    gra.gameinfo(gra.komunikaty[17])
+                                }
+                                else{
+                                    gra.useevents()
+                                }
+                                break
+                        }
+                    }
+                }
+                else if((x=='G') || (x=="GOSSIPS")){
+                    gra.gossipsscreen()
+                }
+                else if((x=='V')||(x=="VOCABULARY")){
+                    gra.vocabularyscreen()
+                }
+                else{
+                    gra.gameinfo(gra.komunikaty[44])
+                }
+                gra.start()
+            },
+            nothinghappened: function(){
+                gra.gameinfo(gra.komunikaty[19])
+            },
+            useevents: function(){
+                console.log(this.y+""+this.x)
+                if(gra.carried == "27"){
+                    gra.prize = true
+                    gra.end()
+                }
+                else{
+                    switch(this.y+""+this.x){
+                        case "45":
+                            if(gra.carried=="1"){
+                                gra.gameinfo(gra.komunikaty[20])
+                                gra.carried="2"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "56":
+                            if(gra.carried=="2"){
+                                gra.gameinfo(gra.komunikaty[21])
+                                gra.carried="3"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "32":
+                            switch(gra.carried){
+                                case "3":
+                                    gra.gameinfo(gra.komunikaty[22])
+                                    gra.homeloc = 4+","+gra.homeloc
+                                    gra.carried = "0"
+                                    gra.sheepcounter++
+                                    break
+                                case "7":
+                                    gra.gameinfo(gra.komunikaty[25])
+                                    gra.homeloc = 8+","+gra.homeloc
+                                    gra.carried = "0"
+                                    gra.sheepcounter++
+                                    break
+                                case "10":
+                                    gra.gameinfo(gra.komunikaty[27])
+                                    gra.homeloc = 11+","+gra.homeloc
+                                    gra.carried = "0"
+                                    gra.sheepcounter++
+                                    break
+                                case "13":
+                                    gra.gameinfo(gra.komunikaty[29])
+                                    gra.homeloc = 14+","+gra.homeloc
+                                    gra.carried = "0"
+                                    gra.sheepcounter++
+                                    break
+                                case "16":
+                                    gra.gameinfo(gra.komunikaty[33])
+                                    gra.homeloc = 17+","+gra.homeloc
+                                    gra.carried = "0"
+                                    gra.sheepcounter++
+                                    break
+                                case "19":
+                                    gra.gameinfo(gra.komunikaty[35])
+                                    gra.homeloc = 20+","+gra.homeloc
+                                    gra.carried = "0"
+                                    gra.sheepcounter++
+                                    break
+                                case "28":
+                                    gra.gameinfo(gra.komunikaty[37])
+                                    setTimeout(function(){
+                                    gra.gameinfo(gra.komunikaty[38])},2000)
+                                    gra.carried = "0"
+                                    gra.homeloc = "21, "
+                                    gra.lokacja[3][2].miejsce = "You are nearby dragon's body;smok.bmp;rgb(255,176,141);1;0;0;1;0"
+                                    gra.tworz_lokacje()
+                                    break
+                                case "24":
+                                    if(gra.homeloc == "21, "){
+                                        gra.gameinfo(gra.komunikaty[39])
+                                        gra.carried="25"
+                                    }
+                                    break
+                                default:
+                                    gra.nothinghappened()
+                                    break
+                            }
+                            if(gra.sheepcounter==6 && gra.done == false){
+                                gra.gameinfo(gra.komunikaty[36])
+                                gra.carried="28"
+                                gra.homeloc = "0, "
+                                gra.done = true
+                            }
+                            break
+                        case "23":
+                            if(gra.carried=="5"){
+                                gra.gameinfo(gra.komunikaty[23])
+                                gra.carried="6"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "26":
+                            if(gra.carried=="6"){
+                                gra.gameinfo(gra.komunikaty[24])
+                                gra.carried="7"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "25":
+                            if(gra.carried=="9"){
+                                gra.gameinfo(gra.komunikaty[26])
+                                gra.carried="10"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "46":
+                            if(gra.carried=="12"){
+                                gra.gameinfo(gra.komunikaty[28])
+                                gra.carried="13"
+                            }
+                            else if(gra.carried=="25"){
+                                gra.gameinfo(gra.komunikaty[40])
+                                gra.carried="26"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "00":
+                            if(gra.carried=="15"){
+                                gra.gameinfo(gra.komunikaty[30])
+                                setTimeout(function(){
+                                gra.gameinfo(gra.komunikaty[31])},2000)
+                                setTimeout(function(){
+                                gra.gameinfo(gra.komunikaty[32])},4000)
+                                gra.carried="16"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "10":
+                            if(gra.carried=="18"){
+                                gra.gameinfo(gra.komunikaty[34])
+                                gra.carried="19"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        case "30":
+                            if(gra.carried=="26"){
+                                gra.gameinfo(gra.komunikaty[41])
+                                gra.carried = "27"
+                            }
+                            else{
+                                gra.nothinghappened()    
+                            }
+                            break
+                        default:
+                            gra.nothinghappened()
+                        }
+                }
+            },
+            end: function(e){
+                var koniecdiv = document.createElement("DIV")
+                koniecdiv.setAttribute("style","width:100%;height:100%;position:absolute;z-index:60;background:black;")
+                koniecdiv.setAttribute("id","koniecdiv")
+                document.body.appendChild(koniecdiv)
+                var koniec = document.createElement("IMG")
+                koniec.setAttribute("style","width:750px;height:400px;postion:absolute;left:10%;background:black;")
+                koniec.src= "img/koniec.gif"
+                koniecdiv.appendChild(koniec)
+                var audio = document.createElement("AUDIO")
+                audio.setAttribute("autoplay","autoplay")
+                audio.setAttribute("loop","loop")
+                document.body.appendChild(audio)
+                var source = document.createElement("SOURCE")
+                source.src = "mp3/endgame.mp3"
+                audio.appendChild(source)
+            }
+        }
+        document.addEventListener("DOMContentLoaded", function(event){
+            gra.intro()
+            gra.start()
+        })
+    </script>
+</body>
+</html>
