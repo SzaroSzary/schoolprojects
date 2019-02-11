@@ -1,0 +1,441 @@
+body
+{
+	width: 960px;
+	margin: 0 auto;
+	background-color: black;
+	font-family: Arial;
+}
+#all
+{
+	background-color: black;
+}
+#hright, #right, #left, #upper, #menu
+{
+	background-color: rgb(72,72,72);
+}
+header
+{
+	width: 960px;
+	height: 143px;
+	margin-bottom: 25px;
+	border-radius: 15px;
+}
+#hleft
+{
+	width: 300px;
+	float: left;
+	border-radius: 15px;
+	height: 143px;
+	background-color: white;
+}
+.hleft
+{
+	height: 143px;
+	width: 150px;
+	border-radius: 15px;
+}
+.hright
+{
+	height: 143px;
+	width: 95px;
+	border-radius: 15px;
+	float: right;
+	margin-right: 27px;
+}
+.index
+{
+	height: 143px;
+	width: 300px;
+	border-radius: 15px;
+	float: left;
+	margin-top: -146px;
+	opacity: 0;
+}
+#hright
+{
+	width: 640px;
+	float: right;
+	margin-left: 20px;
+	height: 143px;
+	border-radius: 15px;
+}
+#hright h1
+{
+	color: yellow;
+	font-size: 60px;
+	padding-bottom: 10px;
+	margin: 0 auto;
+	text-align: center;
+}
+#hright h2
+{
+	color: yellow;
+	font-size: 40px;
+	padding-bottom: 10px;
+	margin: 0 auto;
+	text-align: center;
+}
+#main
+{
+	overflow: hidden;
+}
+#menu
+{
+	width: 300px;
+	height: 680px;
+	float: left;
+	border-radius: 15px;
+}
+#menu ul
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 0;
+	width: 300px;
+}
+#menu ul li:first-child
+{
+	border-top: none;
+}
+#menu ul li
+{
+	margin-top: 5px;
+}
+#menu ul li a
+{
+	box-shadow: inset 0 -3px 3px rgba(0,0,0,0.5), inset 0 3px 3px rgba(255,255,255,0.8);
+	text-decoration: none;
+	background-color: rgb(75,4,0);
+	display: block;
+	padding: 10px;
+	color: white;
+	font-size: 25px;
+	text-align: center;
+	border-radius: 25px;
+}
+#menu ul li a:hover
+{
+	box-shadow: inset 0 -3px 3px rgba(255,255,255,0.5), inset 0 3px 3px rgba(0,0,0,0.8);
+}
+.menurozwijane
+{
+	margin-bottom: 25px;
+}
+#content
+{
+	width: 640px;
+	float: right;
+	margin-left: 20px;
+}
+#upper
+{
+	width: 640px;
+	height: 340px;
+	float: left;
+	margin-bottom: 25px;
+	border-radius: 15px;
+}
+.slider
+{
+	height: 640px;
+	width: 340px;
+}
+.slider a
+{
+	display: block;
+	height: 340px;
+	width: 640px;
+	border-radius: 15px;
+}
+.slider li
+{
+	list-style-type: none;
+	position: absolute;
+	margin-left: -2.5em;
+	margin-top: -1em;
+}
+.slider a img
+{
+	width: 640px;
+	height: 340px;
+	border-radius: 15px;
+	vertical-align: top;
+	opacity: 0;
+	visibility: hidden;
+	transition: .25s;
+}
+#firstchild, #secondchild, #thirdchild
+{
+	position: absolute;
+	color: white;
+	display: block;
+	background-color: rgb(72, 72, 72);
+	border-radius: 15px;
+	height: 30px;
+	width: 350px;
+	text-align: center;
+	font-size: 25px;
+	opacity: .75;
+	margin-left: 145px;
+	margin-top: -35px;
+	padding-top: 5px;
+	visibility: hidden;
+}
+.slider input
+{
+	display: none;
+}
+.slider label
+{
+	background-color: rgb(72, 72, 72);
+	bottom: .5em;
+	cursor: pointer;
+	display: block;
+	height: 1em;
+	position: absolute;
+	width: 1em;
+	z-index: 10;
+	border-radius: 20px;
+}
+.slider li:nth-child(1) label
+{
+    right: 3.5em;
+}
+.slider li:nth-child(2) label
+{
+    right: 2em;
+}
+.slider li:nth-child(3) label
+{
+    right: .5em;
+}
+.slider label:hover
+{
+	background-color: white;
+	box-shadow: inset 0 -3px 3px rgba(0,0,0,0.5), inset 0 3px 3px rgba(255,255,255,0.8);
+}
+.slider li input:checked ~ a img
+{
+    opacity: 1;
+    visibility: visible;
+    z-index: 10;
+	transition: 0.5s;
+}
+.slider li input:checked ~ #firstchild
+{
+	visibility: visible;
+}
+.slider li input:checked ~ #secondchild
+{
+	visibility: visible;
+	transition: 0.5s;
+}
+.slider li input:checked ~ #thirdchild
+{
+	visibility: visible;
+	transition: 0.5s;
+}
+.slider input:checked + label 
+{
+    background-color: #fff;
+	box-shadow: inset 0 -3px 3px rgba(0,0,0,0.5), inset 0 3px 3px rgba(255,255,255,0.8);
+}
+#lower
+{
+	width: 640px;
+	float: left;
+}
+#left
+{
+	float: left;
+	width: 310px;
+	height: 315px;
+	margin-right: 20px;
+	border-radius: 15px;
+}
+#left a img
+{
+	height: 315px;
+	width: 310px;
+	border-radius: 15px;
+}
+#left span
+{
+	display: block;
+	width: 310px;
+	height: 30px;
+	border-radius: 15px;
+	background-color: rgb(72, 72, 72);
+	position: absolute;
+	text-align: center;
+	font-size: 25px;
+	color: white;
+	padding-top: 3px;
+	margin-top: -39px;
+	opacity: .75;
+	padding-top: 5px;
+}
+#right
+{
+	float: right;
+	width: 310px;
+	height: 315px;
+	border-radius: 15px;
+}
+#right a img
+{
+	height: 315px;
+	width: 310px;
+	border-radius: 15px;
+}
+#right span
+{
+	display: block;
+	width: 310px;
+	height: 30px;
+	border-radius: 15px;
+	background-color: rgb(72, 72, 72);
+	position: absolute;
+	text-align: center;
+	font-size: 25px;
+	color: white;
+	padding-top: 3px;
+	margin-top: -39px;
+	opacity: .75;
+	padding-top: 5px;
+}
+#galeriazdjec, #pozycjonowanie, #menurozwijane, #ukladyplynne, #formularze, #ukladyhybrydowe, #gradienty, #dziedziczenie, #mapyodsylaczy
+{
+	width: 640px;
+	background-color: rgb(72, 72, 72);
+	border-radius: 15px;
+	float: right;
+	color: white;
+}
+#ukladyplynne
+{
+	margin-bottom: 25px;
+}
+#formularze
+{
+	margin-bottom: 25px;
+}
+#mapyodsylaczy
+{
+	margin-bottom: 25px;
+}
+.ukladyplynne
+{
+	float: left;
+}
+#formularze form input
+{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+#formularze select
+{
+	margin-top: 5px;
+	margin-bottom: 5px;
+}
+#formularze fieldset
+{
+	width: 200px;
+	border: 3px rgb(75,4,0) solid;
+	border-radius: 15px;
+}
+#formularze fieldset legend
+{
+	text-align: center;
+	font-variant: small-caps;
+}
+#formularze fieldset form input
+{
+	width: 200px;
+}
+#galeriazdjec p, #pozycjonowanie p, #menurozwijane p, #ukladyplynne p, #formularze p, #ukladyhybrydowe p, #gradienty p, #dziedziczenie p, #mapyodsylaczy p
+{
+	margin-left: 20px;
+	text-indent: 10px;
+}
+#galeriazdjec h1, #pozycjonowanie h1, #menurozwijane h1, #ukladyplynne h1, #formularze h1, #ukladyhybrydowe h1, #gradienty h1, #dziedziczenie h1, #mapyodsylaczy h1
+{
+	margin-left: 10px;
+	font-variant: small-caps; 
+}
+#galeriazdjec span, #pozycjonowanie span, #menurozwijane span, #ukladyplynne span, #formularze span, #ukladyhybrydowe span, #gradienty span, #dziedziczenie span, #mapyodsylaczy span
+{
+	color: yellow;
+	font-weight: bold;
+}
+#galeriazdjec figure
+{
+	width: 225px;
+	border-radius: 15px;
+	border: 3px rgb(75,4,0) solid;
+	float: left;
+}
+#pozycjonowanie figure
+{
+	margin-left: 101px;
+	width: 432px;
+	border-radius: 15px;
+	border: 3px rgb(75,4,0) solid;
+	float: left;
+}
+#ukladyplynne figure
+{
+	width: 200px;
+	border-radius: 15px;
+	border: 3px rgb(75,4,0) solid;
+	float: left;
+	margin-right: 70px;
+}
+#galeriazdjec figcaption, #pozycjonowanie figcaption, #ukladyplynne figcaption
+{
+	text-align: center;
+	color: yellow;
+	font-variant: small-caps;
+}
+#galeriazdjec img, #pozycjonowanie img, #ukladyplynne img
+{
+	border-radius: 15px;
+}
+.pozycjonowanie
+{
+	float: left;
+}
+footer
+{
+	clear: both;
+	height: 143px;
+	width: 960px;
+	margin-top: 25px;
+	border-radius: 15px;
+	background-color: rgb(75,4,0);
+}
+#buttons
+{
+	padding-left: 120px;
+	padding-top: 118px;
+	float: left;
+	width: 400px;
+}
+.copyright
+{
+	padding-left: 10px;
+	color: white;
+	font-size: 12px;
+}
+#buttons img
+{
+	border-radius: 5px;
+}
+#description
+{
+	font-size: 16px;
+	color: white;
+	float: right;
+	width: 400px;
+	padding-top: 10px;
+}
