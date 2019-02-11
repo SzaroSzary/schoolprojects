@@ -1,0 +1,313 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>K&#xF3;&#x142;ko i krzy&#x17C;yk</title>
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var k = 0;
+            var wielkosc = 3;
+            var kolorek = "green"
+            $("#div1").css("width", "100%")
+            $("#div1").css("height", "100%")
+            $("#div1").css("margin-top", "5px")
+            console.log(wielkosc)
+            gra()
+            function gra () {
+                var y = $("#s2").val()
+                if(y=="3"){
+                    $("#div1").empty()
+                    k=0
+                    wielkosc = 3
+                    for (var i = 0; i < wielkosc; i++, k++) {
+                    for (var j = 0; j < wielkosc; j++, k++) {
+                        var div = $("<div>")
+                        div.width("30%")
+                        div.css("padding-bottom","30%")
+                        div.css("background", kolorek)
+                        $("#div1").append(div)
+                        div.css("position", "relative")
+                        div.css("float", "left")
+                        div.css("border", "2px solid black")
+                        div.attr("id",k+"")
+                        var kolko = true
+                        var x = 0
+                        $("#"+k).on("click",function(){
+                            if(x<=8){
+                                if(kolko == true){
+                                    var circle = $("<img>", {
+                                        id: "circle",
+                                        src: "images/circle.png"
+                                    })
+                                    circle.css("position", "absolute")
+                                    circle.width("100%")
+                                    circle.height("100%")
+                                    circle.appendTo($(this))
+                                    kolko= false
+                                    x++
+                                    $(this).addClass("circle")
+                                    console.log($(this).val(this))
+                                    console.log(x)
+                                    $(this).off("click")
+                                    if($("#0").hasClass("circle") && $("#3").hasClass("circle") && $("#6").hasClass("circle") || $("#1").hasClass("circle") && $("#4").hasClass("circle") && $("#7").hasClass("circle") || $("#2").hasClass("circle") && $("#5").hasClass("circle") && $("#8").hasClass("circle") || $("#0").hasClass("circle") && $("#1").hasClass("circle") && $("#2").hasClass("circle") || $("#3").hasClass("circle") && $("#4").hasClass("circle") && $("#5").hasClass("circle") || $("#6").hasClass("circle") && $("#7").hasClass("circle") && $("#8").hasClass("circle") || $("#0").hasClass("circle") && $("#4").hasClass("circle") && $("#8").hasClass("circle") || $("#2").hasClass("circle") && $("#4").hasClass("circle") && $("#6").hasClass("circle")){
+                                        alert("Wygrywa k\u00F3\u0142ko!")
+                                        gra()
+                                    }
+                                    else if (x>=9){
+                                        alert("Remis")
+                                        gra()
+                                    }
+                                }
+                                else if (kolko == false){
+                                    var cross = $("<img>", {
+                                        id: "cross",
+                                        src: "images/cross.png"
+                                    })
+                                    cross.css("position", "absolute")
+                                    cross.width("100%")
+                                    cross.height("100%")
+                                    cross.appendTo($(this))
+                                    kolko=true
+                                    x++
+                                    $(this).addClass("cross")
+                                    console.log($(this).val(this))
+                                    console.log(x)
+                                    $(this).off("click")
+                                    if($("#0").hasClass("cross") && $("#3").hasClass("cross") && $("#6").hasClass("cross") || $("#1").hasClass("cross") && $("#4").hasClass("cross") && $("#7").hasClass("cross") || $("#2").hasClass("cross") && $("#5").hasClass("cross") && $("#8").hasClass("cross") || $("#0").hasClass("cross") && $("#1").hasClass("cross") && $("#2").hasClass("cross") || $("#3").hasClass("cross") && $("#4").hasClass("cross") && $("#5").hasClass("cross") || $("#6").hasClass("cross") && $("#7").hasClass("cross") && $("#8").hasClass("cross") || $("#0").hasClass("cross") && $("#4").hasClass("cross") && $("#8").hasClass("cross") || $("#2").hasClass("cross") && $("#4").hasClass("cross") && $("#6").hasClass("cross")){
+                                        alert("Wygrywa krzy\u017Cyk!")
+                                        gra()
+                                    }
+                                }
+                            }
+                        })
+                    }
+                k--;
+            }
+                }
+                else if(y=="4"){
+                    $("#div1").empty()
+                    k=0
+                    wielkosc = 4
+                    for (var i = 0; i < wielkosc; i++, k++) {
+                    for (var j = 0; j < wielkosc; j++, k++) {
+                        var div = $("<div>")
+                        div.width("23%")
+                        div.css("padding-bottom","23%")
+                        div.css("background", kolorek)
+                        $("#div1").append(div)
+                        div.css("position", "relative")
+                        div.css("float", "left")
+                        div.css("border", "2px solid black")
+                        div.attr("id",k+"")
+                        var kolko = true
+                        var x = 0
+                        $("#"+k).on("click",function(){
+                            if(x<=15){
+                                if(kolko == true){
+                                    var circle = $("<img>", {
+                                        id: "circle",
+                                        src: "images/circle.png"
+                                    })
+                                    circle.css("position", "absolute")
+                                    circle.width("100%")
+                                    circle.height("100%")
+                                    circle.appendTo($(this))
+                                    kolko= false
+                                    x++
+                                    $(this).addClass("circle")
+                                    console.log($(this).val(this))
+                                    $(this).off("click")
+                                }
+                                else {
+                                    var cross = $("<img>", {
+                                        id: "cross",
+                                        src: "images/cross.png"
+                                    })
+                                    cross.css("position", "absolute")
+                                    cross.width("100%")
+                                    cross.height("100%")
+                                    cross.appendTo($(this))
+                                    kolko=true
+                                    x++
+                                    $(this).addClass("cross")
+                                    console.log($(this).val(this))
+                                    $(this).off("click")
+                                }
+                            }
+                        })
+                    }
+                k--;
+            }
+                }
+                else if(y=="5"){
+                    $("#div1").empty()
+                    k=0
+                    wielkosc = 5
+                    for (var i = 0; i < wielkosc; i++, k++) {
+                    for (var j = 0; j < wielkosc; j++, k++) {
+                        var div = $("<div>")
+                        div.width("18%")
+                        div.css("padding-bottom","18%")
+                        div.css("background", kolorek)
+                        $("#div1").append(div)
+                        div.css("position", "relative")
+                        div.css("float", "left")
+                        div.css("border", "2px solid black")
+                        div.attr("id",k+"")
+                        var kolko = true
+                        var x = 0
+                        $("#"+k).on("click",function(){
+                            if(x<=24){
+                                if(kolko == true){
+                                    var circle = $("<img>", {
+                                        id: "circle",
+                                        src: "images/circle.png"
+                                    })
+                                    circle.css("position", "absolute")
+                                    circle.width("100%")
+                                    circle.height("100%")
+                                    circle.appendTo($(this))
+                                    kolko= false
+                                    x++
+                                    $(this).addClass("circle")
+                                    console.log($(this).val(this))
+                                    $(this).off("click")
+                                }
+                                else {
+                                    var cross = $("<img>", {
+                                        id: "cross",
+                                        src: "images/cross.png"
+                                    })
+                                    cross.css("position", "absolute")
+                                    cross.width("100%")
+                                    cross.height("100%")
+                                    cross.appendTo($(this))
+                                    kolko=true
+                                    x++
+                                    $(this).addClass("cross")
+                                    console.log($(this).val(this))
+                                    $(this).off("click")
+                                }
+                            }
+                        })
+                    }
+                k--;
+            }
+                }
+                else if(y=="6"){
+                    $("#div1").empty()
+                    k=0
+                    wielkosc = 6
+                    for (var i = 0; i < wielkosc; i++, k++) {
+                    for (var j = 0; j < wielkosc; j++, k++) {
+                        var div = $("<div>")
+                        div.width("15%")
+                        div.css("padding-bottom","15%")
+                        div.css("background", kolorek)
+                        $("#div1").append(div)
+                        div.css("position", "relative")
+                        div.css("float", "left")
+                        div.css("border", "2px solid black")
+                        div.attr("id",k+"")
+                        var kolko = true
+                        var x = 0
+                        $("#"+k).on("click",function(){
+                            if(x<=35){
+                                if(kolko == true){
+                                    var circle = $("<img>", {
+                                        id: "circle",
+                                        src: "images/circle.png"
+                                    })
+                                    circle.css("position", "absolute")
+                                    circle.width("100%")
+                                    circle.height("100%")
+                                    circle.appendTo($(this))
+                                    kolko= false
+                                    x++
+                                    $(this).addClass("circle")
+                                    console.log($(this).val(this))
+                                    $(this).off("click")
+                                }
+                                else {
+                                    var cross = $("<img>", {
+                                        id: "cross",
+                                        src: "images/cross.png"
+                                    })
+                                    cross.css("position", "absolute")
+                                    cross.width("100%")
+                                    cross.height("100%")
+                                    cross.appendTo($(this))
+                                    kolko=true
+                                    x++
+                                    $(this).addClass("cross")
+                                    console.log($(this).val(this))
+                                    $(this).off("click")
+                                }
+                            }
+                        })
+                    }
+                k--;
+            }
+                }
+            }
+            $("#s2").on("change", function(){
+                gra()
+            })
+            $("#s1").on("change", function () {
+                var y = $("#s1").val()
+                if(y=="g"){
+                    for(var i=0;i<=35;i++){
+                        kolorek ="green"
+                        $("#"+i).css("background", kolorek)
+                    }
+                }
+                else if(y=="c"){
+                    for(var i=0;i<=35;i++){
+                        kolorek ="red"
+                        $("#"+i).css("background", kolorek)
+                    }
+                }
+                else if(y=="z"){
+                    for(var i=0;i<=35;i++){
+                        kolorek="yellow"
+                        $("#"+i).css("background", kolorek)
+                    }
+                }
+                else if(y=="p"){
+                    for(var i=0;i<=35;i++){
+                        kolorek="orange"
+                        $("#"+i).css("background", kolorek)
+                    }
+                }
+            })
+            $("#reset").on("click", function(){
+                gra()
+            })
+            $("#g").css("background", "green")
+            $("#c").css("background", "red")
+            $("#z").css("background", "yellow")
+            $("#p").css("background", "orange")
+            $("body").css("font-family", "Arial")
+            $("h2").css("margin", "0")
+            $("h2").css("padding", "0")
+        })
+    </script>
+</head>
+<body>
+    <h2>K&#xF3;&#x142;ko i krzy&#x17C;yk</h2>
+    <select id="s2">
+        <option value="3">3x3</option>
+        <option value="4">4x4</option>
+        <option value="5">5x5</option>
+        <option value="6">6x6</option>
+    </select>
+    <select id="s1">
+        <option value="g" id="g">zielony</option>
+        <option value="c" id="c">czerwony</option>
+        <option value="z" id="z">zolty</option>
+        <option value="p" id="p">pomaranczowy</option>
+    </select>
+    <input type="button" id="reset" value="Nowa gra" />
+    <div id="div1"></div>
+</body>
+</html>
