@@ -1,0 +1,196 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <link href="style.css" rel="stylesheet" />
+    <script src="libs/three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(fov, res, minrender, maxrender);
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0x000000);
+            renderer.setSize(szerokosc, wysokosc);
+
+            camera.position.x = -300;
+            camera.position.y = 100;
+            camera.position.z = 200;
+            document.getElementById("main").appendChild(renderer.domElement);
+
+            var axis = new THREE.AxisHelper(500);
+            scene.add(axis);
+            var geometry = new THREE.CubeGeometry(10, 10, 10, 1, 1, 1);
+            var material = new THREE.MeshBasicMaterial({
+                color: 0xffff00,
+                side: THREE.DoubleSide,
+            });
+            var mesh = new THREE.Mesh(geometry, material);
+            mesh.position.y = 25
+            scene.add(mesh)
+            camera.lookAt(mesh.position)
+
+            var planegeometry = new THREE.PlaneGeometry(1000, 1000, 64, 64);
+            var planematerial = new THREE.MeshBasicMaterial({
+                side: THREE.DoubleSide,
+                map: THREE.ImageUtils.loadTexture("gfx/ground.jpg")});
+            var plane = new THREE.Mesh(planegeometry, planematerial);
+            plane.material.map.repeat.set(64, 64);
+            plane.material.map.wrapS = plane.material.map.wrapT = THREE.RepeatWrapping;
+            plane.rotateX(Math.PI/2)
+            scene.add(plane);
+            
+            var undertab = []
+            var undersize = 11
+            var change = false
+            for (var i = 0; i < undersize; i++) {
+                undertab[i] = []
+                for (var j = 0 ; j < undersize; j++) {
+                    var meshmaterial
+                    if (change) {
+                        meshmaterial = new THREE.MeshBasicMaterial({
+                            side: THREE.DoubleSide,
+                            color: 0xff0000
+                        });
+                        change = false
+                    }
+                    else {
+                        meshmaterial = new THREE.MeshBasicMaterial({
+                            side: THREE.DoubleSide,
+                            color: 0x0000ff
+                        });
+                        change = true
+                    }
+                    var undermesh = new THREE.Mesh(geometry, meshmaterial)
+                    undermesh.position.x = i * 10 - ((undersize/2) * 10)
+                    undermesh.position.z = j * 10
+                    undermesh.position.y = 5
+                    undertab[i].push(undermesh)
+                    scene.add(undermesh)
+                }
+                if (change) {
+                    change = false
+                }
+                else {
+                    change = true
+                }
+            }
+            console.log(undertab)
+            var turnleft = false
+            var turnright = false
+            var move = false
+            document.addEventListener("keydown", onKeyDown, false); // naciśnięcie dowolnego klawisza
+            document.addEventListener("keyup", onKeyUp, false); //zwolnienie dowolnego klawisza
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                console.log(keyCode)
+                switch (keyCode) {
+                    case 37:
+                        turnleft = true
+                        break;
+                    case 39:
+                        turnright = true
+                        break;
+                    case 38:
+                        move = true
+                        break;
+                }
+            }
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 37:
+                        turnleft = false
+                        break;
+                    case 39:
+                        turnright = false
+                        break;
+                    case 38:
+                        move = false
+                        break;
+                }
+            }
+
+            function distanceVector(v1, v2) {
+                var dx = v1.x - v2.x;
+                var dy = v1.y - v2.y;
+                var dz = v1.z - v2.z;
+
+                return Math.sqrt(dx * dx + dy * dy + dz * dz);
+            }
+
+            var side = Math.floor(undertab.length / 2)
+            console.log(side)
+            
+            function animateScene() {
+                var camVect = new THREE.Vector3(0, 30, -150)
+                var camPos = camVect.applyMatrix4(mesh.matrixWorld);
+                camera.position.x = camPos.x
+                camera.position.y = camPos.y
+                camera.position.z = camPos.z
+                camera.lookAt(mesh.position)
+                if (move) {
+                    mesh.translateZ(1)
+                }
+                if (turnleft) {
+                    mesh.rotation.y += Math.PI / 72
+                }
+                else if (turnright) {
+                    mesh.rotation.y -= Math.PI / 72
+                }
+                if (distanceVector(undertab[side][undertab[side].length - 1].position, mesh.position) > (undertab.length / 2) * 10 + 5)
+                {
+                    for (var i = 0; i < undertab[side].length; i++) {
+                        undertab[i].unshift(undertab[i].pop())
+                        undertab[i][0].translateZ(-undertab.length * 10)
+                    }
+                }
+
+                else if (distanceVector(undertab[side][0].position, mesh.position) > (undertab.length / 2) * 10 + 5) {
+                    for (var i = 0; i < undertab[side].length; i++) {
+                        undertab[i][0].translateZ(undertab.length * 10)
+                        undertab[i].push(undertab[i].shift())
+                    }
+                }
+
+                if (distanceVector(undertab[0][side].position, mesh.position) > (undertab.length / 2) * 10 + 5) {
+                    for (var i = 0; i < undertab[0].length; i++) {
+                        undertab[0][i].translateX(undertab.length * 10)
+                    }
+                    undertab.push(undertab.shift())
+                }
+
+                else if (distanceVector(undertab[side][undertab[side].length - 1].position, mesh.position) > (undertab.length / 2) * 10 + 5) {
+                    undertab.unshift(undertab.pop())
+                    for (var i = 0; i < undertab[0].length; i++) {
+                        undertab[0][i].translateX(-undertab.length * 10)
+                    }                       
+                }
+
+                for (var i = 0; i < undertab.length; i++) {
+                    for (var j = 0; j < undertab[i].length; j++) {
+                        if (distanceVector(undertab[i][j].position, mesh.position) > (undertab.length / 2) * 10) 
+                            undertab[i][j].visible = false;
+                        else
+                            undertab[i][j].visible = true;
+                    }
+                }
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            animateScene();
+        });
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+</body>
+</html>
