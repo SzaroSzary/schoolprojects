@@ -1,0 +1,87 @@
+﻿        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #editor{
+            width:100%;
+            height:100%;
+            position:absolute;
+        }
+        #levelmap{
+            width:500px;
+            height:500px;
+            position:absolute;
+            left:10px;
+            top:10px;
+            border: 2px black solid;
+        }
+        #levelobjects{
+            width:120px;
+            height:500px;
+            position:absolute;
+            left:520px;
+            top:10px;
+        }
+        .levelobj{
+            width:100px;
+            height:30px;
+            border-radius:30px;
+            border:2px black solid;
+            position:absolute;
+            font-size:20px;
+            text-align:center;
+        }
+        #levelsize{
+            width:100px;
+            height:30px;
+            border-radius:30px;
+        }
+        #wall{
+            background:green;
+            top: 50px;
+        }
+        #enemy{
+            background:red;
+            top: 90px;
+        }
+        #treasure{
+            background:blue;
+            top: 130px;
+        }
+        #light{
+            background:yellow;
+            top: 170px;
+        }
+        #item1{
+            background:purple;
+            top: 210px;
+        }
+        #item2{
+            background:cyan;
+            top: 250px;
+        }
+        #delete{
+            background:white;
+            top: 290px;
+        }
+        #jsontext{
+            width:500px;
+            height:500px;
+            position:absolute;
+            left: 650px;
+            top:10px;
+        }
+        #textarea{
+            width:500px;
+            height:470px;
+            background:black;
+            color:white;
+        }
+        #loadjson{
+            position:relative;
+            top:10px;
+            width:250px;
+            height:30px;
+            border-radius:30px;
+            border:2px black solid;
+        }

@@ -1,0 +1,132 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+</head>
+<body>
+
+</body>
+</html>
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                fov,
+                res,
+                minrender,
+                maxrender
+                );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0x000000);
+            renderer.setSize(szerokosc, wysokosc);
+            var axis = new THREE.AxisHelper(500);
+            scene.add(axis);
+            var v2 = new THREE.Vector3(0, 0, 0)
+            var paxis = new THREE.AxisHelper(200);
+            scene.add(paxis);
+            var targets = []
+            document.getElementById("main").appendChild(renderer.domElement);
+            camera.position.x = 0;
+            camera.position.y = 400;
+            camera.position.z = 0;
+            camera.lookAt(axis.position)
+            var redmaterial = new THREE.MeshBasicMaterial({ side: THREE.FrontSide, color: 0xff0000 })
+            var boxgeometry = new THREE.CubeGeometry(10, 10, 10, 1, 1, 1);
+            for (var i = 0; i < 15; i++) {
+                var red = new THREE.Mesh(boxgeometry, redmaterial)
+                targets.push(red)
+                scene.add(red)
+                var sign = Math.random() < 0.5 ? -1 : 1;
+                var v1 = new THREE.Vector3(sign*Math.floor((Math.random() * 100)), 0, sign*Math.floor((Math.random() * 100)))
+                red.position.copy(v1)
+            }
+            var greenmaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 0x00ff00 })
+            var player = new THREE.Mesh(boxgeometry, greenmaterial)
+            player.position.copy(v2)
+            scene.add(player)
+            paxis.position.copy(player.position)
+            document.addEventListener("keydown", onKeyDown, false)
+            document.addEventListener("keyup", onKeyUp, false)
+            var move = false
+            var turnleft = false
+            var turnright = false
+            function onKeyDown(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 37:
+                        turnleft = true
+                        break;
+                    case 39:
+                        turnright = true
+                        break;
+                    case 38:
+                        move = true
+                        break;
+                }
+            }
+            function onKeyUp(event) {
+                var keyCode = event.which;
+                switch (keyCode) {
+                    case 37:
+                        turnleft = false
+                        break;
+                    case 39:
+                        turnright = false
+                        break;
+                    case 38:
+                        move = false
+                        break;
+                }
+            }
+            var raycaster = new THREE.Raycaster()
+            function animateScene() {
+                if (move) {
+                    player.translateZ(1)
+                    paxis.position.copy(player.position)
+                }
+                if (turnleft) { 
+                    player.rotation.y += Math.PI / 72
+                    paxis.rotation.copy(player.rotation)
+                }
+                else if (turnright) {
+                    player.rotation.y -= Math.PI / 72
+                    paxis.rotation.copy(player.rotation)
+                }
+                var ray = new THREE.Ray(player.position, player.getWorldDirection())
+                raycaster.ray = ray
+                var intersects = raycaster.intersectObjects(targets);
+                console.log(intersects.length)
+                for (var i = 0; i < targets.length; i++) {
+                    targets[i].lookAt(player.position)
+                }
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            animateScene();
+        })
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+</body>
+</html>

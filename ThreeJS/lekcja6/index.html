@@ -1,0 +1,35 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script src="js/Level.js"></script>
+    <script src="js/LevelData.js"></script>
+    <script src="js/MyLight.js"></script>
+    <script src="js/EnemyModel.js"></script>
+    <script src="js/PlayerModel.js"></script>
+    <script src="js/Stats.js"></script>
+    <script src="js/Fire.js"></script>
+    <script src="js/Laser.js"></script>
+    <script src="js/EnemyLaser.js"></script>
+    <link href="css/game.css" rel="stylesheet" />
+    <script>
+        var level = new Level()
+        var leveldata = new LevelData()
+        var mylight = new MyLight()
+        var fire = new Fire()
+        level.init()
+    </script>
+</head>
+<body>
+    <div id="main"></div>
+    <div id="menu">
+        <label>fov<input type="range" id="fov" value="45" step="1" min="1" max="120" /></label>
+        <label>camheight<input type="range" id="camheight" value="25" step="5" min="10" max="500" /></label>
+        <label>camlength<input type="range" id="camlength" value="-100" step="5" min="-200" max="200" /></label>
+        <label>intensity<input type="range" id="intensity" value="4" step="0.5" min="1" max="10" /></label>
+        <label>shadows<input type="checkbox" id="shadows" /></label>
+    </div>
+</body>
+</html>

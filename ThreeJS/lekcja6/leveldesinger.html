@@ -1,0 +1,205 @@
+﻿<!doctype html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="js/LevelData.js"></script>
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script>
+        var leveldata = new LevelData()
+        function select() {
+            for(var i=2;i<21;i++){
+                var option = $("<option>")
+                if (i == 2) {
+                    option.val = "Wybierz rozmiar"
+                    option.html("Wybierz rozmiar")
+                }
+                else {
+                    option.val = i+""
+                    option.html(i+"")
+                }
+                $("#levelsize").append(option)
+            }
+            var size
+            $("#levelsize").on("change", function () {
+                $("#levelmap").empty()
+                size = this.value
+                var type = ""
+                var color
+                var object = {
+                    size: size,
+                    level: []
+                }
+                for (var x = 0; x < size; x++) {
+                    for (var z = 0; z < size; z++) {
+                        var cell = $("<div>")
+                        cell.css("width", (500 / size) + "px")
+                        cell.css("height", (500 / size) + "px")
+                        cell.css("border", "1px black solid")
+                        cell.css("position","absolute")
+                        cell.css("left", ((500 / size) * x) + "px")
+                        cell.css("top", ((500 / size) * z) + "px")
+                        cell.attr("id", x + "_" + z) 
+                        $("#levelmap").append(cell)
+                        $("#" + x + "_" + z).on("click", function () {
+                            var xcoord = this.id.split("_")[0]
+                            var zcoord = this.id.split("_")[1]
+                            var id = this.id.split("_").join("")
+                            var change = false
+                            var del = false
+                            if (type == "delete") {
+                                del =true
+                            }
+                            if (!del) {
+                                for (var i = object.level.length; i > 0; i--) {
+                                    if (object.level[i - 1].id == id) {
+                                        object.level[i - 1] = {
+                                            x: xcoord,
+                                            z: zcoord,
+                                            type: type,
+                                            id: id
+                                        }
+                                        change = true;
+                                        break;
+                                    }
+                                }
+                                if (!change && object.level.length >= 0) {
+                                    object.level.push({
+                                        x: xcoord,
+                                        z: zcoord,
+                                        type: type,
+                                        id: id
+                                    })
+                                }
+                            }
+                            else {
+                                for (var i = object.level.length; i > 0; i--) {
+                                    if (object.level[i - 1].id == id) {
+                                        object.level.splice(i - 1,1)
+                                        break;
+                                    }
+                                }
+                            }
+                            this.style.background = color
+                            $("#textarea").val(JSON.stringify(object,null,3))
+                        })
+                    }
+                }
+                $(".levelobj").on("click", function () {
+                    type = this.innerHTML
+                    color = $(this).css("background-color")
+                })
+                $("#loadjson").on("click", function () {
+                    var vw = $("#textarea").val()
+                    vw = JSON.parse(vw)
+                    $("#levelmap").empty()
+                    size = vw.size
+                    for (var x = 0; x < size; x++) {
+                        for (var z = 0; z < size; z++) {
+                            var cell = $("<div>")
+                            cell.css("width", (500 / size) + "px")
+                            cell.css("height", (500 / size) + "px")
+                            cell.css("border", "1px black solid")
+                            cell.css("position", "absolute")
+                            cell.css("left", ((500 / size) * x) + "px")
+                            cell.css("top", ((500 / size) * z) + "px")
+                            cell.attr("id", x + "_" + z)
+                            for (var i = vw.level.length; i > 0; i--) {
+                                if (vw.level[i - 1].x == x && vw.level[i - 1].z == z) {
+                                    switch (vw.level[i - 1].type) {
+                                        case "wall":
+                                            cell.css("background","green")
+                                            break
+                                        case "enemy":
+                                            cell.css("background", "red")
+                                            break
+                                        case "treasure":
+                                            cell.css("background", "blue")
+                                            break
+                                        case "light":
+                                            cell.css("background", "yellow")
+                                            break
+                                        case "item":
+                                            cell.css("background", "purple")
+                                            break
+                                        case "item2":
+                                            cell.css("background", "cyan")
+                                            break
+                                    }
+                                }
+                            }
+                            $("#levelmap").append(cell)
+                            $("#" + x + "_" + z).on("click", function () {
+                                var xcoord = this.id.split("_")[0]
+                                var zcoord = this.id.split("_")[1]
+                                var id = this.id.split("_").join("")
+                                var change = false
+                                var del = false
+                                if (type == "delete") {
+                                    del = true
+                                }
+                                if (!del) {
+                                    for (var i = vw.level.length; i > 0; i--) {
+                                        if (vw.level[i - 1].id == id) {
+                                            vw.level[i - 1] = {
+                                                x: xcoord,
+                                                z: zcoord,
+                                                type: type,
+                                                id: id
+                                            }
+                                            change = true;
+                                            break;
+                                        }
+                                    }
+                                    if (!change && vw.level.length >= 0) {
+                                        vw.level.push({
+                                            x: xcoord,
+                                            z: zcoord,
+                                            type: type,
+                                            id: id
+                                        })
+                                    }
+                                }
+                                else {
+                                    console.log("del")
+                                    for (var i = vw.level.length; i > 0; i--) {
+                                        if (vw.level[i - 1].id == id) {
+                                            vw.level.splice(i - 1, 1)
+                                            break;
+                                        }
+                                    }
+                                }
+                                this.style.background = color
+                                $("#textarea").val(JSON.stringify(vw, null, 3))
+                            })
+                        }
+                    }
+                })
+            })
+        }
+        window.onload = function () {
+            select();
+        }
+    </script>
+    <link href="css/style.css" rel="stylesheet" />
+</head>
+<body>
+    <div id="editor">
+        <div id="levelmap"></div>
+        <div id="levelobjects">
+            <select id="levelsize"></select>
+            <div id="wall" class="levelobj">wall</div>
+            <div id="enemy" class="levelobj">enemy</div>
+            <div id="treasure" class="levelobj">treasure</div>
+            <div id="light" class="levelobj">light</div>
+            <div id="item1" class="levelobj">item</div>
+            <div id="item2" class="levelobj">item2</div>
+            <div id="delete" class="levelobj">delete</div>
+        </div>
+        <div id="jsontext">
+            <textarea id="textarea"></textarea>
+            <input type="button" id="loadjson" value="ZAŁADUJ JSON DO EDYTORA"/>
+        </div>
+    </div>
+</body>
+</html>

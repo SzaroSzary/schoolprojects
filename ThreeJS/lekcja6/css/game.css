@@ -1,0 +1,24 @@
+﻿body {
+    margin: 0;
+    overflow: hidden;
+}
+canvas {
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+#menu {
+    position: absolute;
+    top:0;
+    right:0;
+    width:250px;
+    height:350px;
+    background:rgba(0,0,0,0.3);
+    z-index:10;
+}
+label {
+    position:relative;
+    width:250px;
+    height:30px;
+    margin-right:100px;
+}

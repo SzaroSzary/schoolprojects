@@ -1,0 +1,168 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                fov,
+                res,
+                minrender,
+                maxrender
+                );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0x000000);
+            renderer.setSize(szerokosc, wysokosc);
+            var boxgeometry = new THREE.CubeGeometry(30, 30, 30, 1, 1, 1);
+            var spheregeometry = new THREE.SphereGeometry(20, 100, 32);
+            var redmaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 0xff0000 })
+            var bluematerial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 0x0000ff })
+            var greenmaterial = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, color: 0x00ff00 })
+            var blue = new THREE.Mesh(boxgeometry, bluematerial)
+            var red = new THREE.Mesh(spheregeometry, redmaterial)
+            var green = new THREE.Mesh(spheregeometry, greenmaterial)
+            var axis = new THREE.AxisHelper(500);
+            scene.add(blue)
+            scene.add(red)
+            scene.add(green)
+            scene.add(axis);
+            document.getElementById("main").appendChild(renderer.domElement);
+            camera.position.x = -300;
+            camera.position.y = 100;
+            camera.position.z = 200;
+            var v1 = new THREE.Vector3(80, 80, 80)
+            var v2 = new THREE.Vector3(200, 200, 200)
+            var v3 = new THREE.Vector3(200, 200, 200)
+            red.position.copy(v1)
+            blue.position.copy(v1)
+            green.position.copy(v2)
+            camera.lookAt(v1)
+
+            document.getElementById("updown").onclick = function () {
+                if (blue.position.x == v1.x && blue.position.y == v1.y && blue.position.z == v1.z) {
+                    blue.position.copy(v3)
+                }
+                else {
+                    blue.position.copy(v1)
+                }
+            }
+            var difference = v2.sub(v1)
+            var step = difference.divideScalar(30)
+            document.getElementById("step").onclick = function () {
+                if (document.getElementById("step").innerHTML=="STEP UP") {
+                    blue.position.add(step)
+                    if (blue.position.x == v3.x && blue.position.y == v3.y && blue.position.z == v3.z) {
+                        document.getElementById("step").innerHTML = "STEP DOWN"
+                    }
+                }
+                else {
+                    blue.position.sub(step)
+                    if (blue.position.x == v1.x && blue.position.y == v1.y && blue.position.z == v1.z) {
+                        document.getElementById("step").innerHTML = "STEP UP"
+                    }
+                }
+            }
+            function laser(vec1, vec2) {
+                var subV = new THREE.Vector3(
+                    vec2.x - vec1.x,
+                    vec2.y - vec1.y,
+                    vec2.z - vec1.z
+                )
+                return subV
+            }
+            var particles = new THREE.Geometry()
+            var particleMaterial = new THREE.PointsMaterial(
+            {
+                color: 0xff3300,
+                size: 100,
+                map: THREE.ImageUtils.loadTexture("img/particle.png"),
+                blending: THREE.AdditiveBlending,
+                transparent: true,
+                depthWrite: false,
+                opacity: 0.6
+            });
+            var subV = new laser(v1, v3)
+            var stepV = subV.divideScalar(50)
+            for (var i = 0; i < 50;i++){
+                var particle = new THREE.Vector3(
+                    v1.x + stepV.x * i,
+                    v1.y + stepV.y * i,
+                    v1.z + stepV.z * i)
+                particles.vertices.push(particle);
+            }
+            var particleSystem = new THREE.Points(particles, particleMaterial);
+            scene.add(particleSystem)
+            document.getElementById("rng").oninput = function () {
+                particleMaterial.size = parseInt(document.getElementById("rng").value)
+            }
+            function update() {
+                var verts = particles.vertices
+
+                for (var i = 0; i < verts.length; i++) {
+                    var particle = verts[i]
+                    particle.x = particle.x + (Math.floor((Math.random() * 2)))
+                    particle.y = particle.y + (Math.floor((Math.random() * 2)))
+                    particle.z = particle.z + (Math.floor((Math.random() * 2)))
+                    if (particle.x > 200 || particle.y > 200 || particle.z>200) {
+                        particle.x = 100
+                        particle.y = 100
+                        particle.z = 100
+                    }
+                    }
+
+                particleSystem.geometry.verticesNeedUpdate = true;
+                particleSystem.material.size = 100 // zmiana skali wszystkich cząsteczek
+            }
+            function animateScene() {
+                update()
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            animateScene();
+        })
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+        #updown{
+            width: 100px;
+            height:20px;
+            position:absolute;
+            right:40px;
+            top:40px;
+        }
+        #step{
+            width: 100px;
+            height:20px;
+            position:absolute;
+            right:40px;
+            top:80px;
+        }
+        #rng{
+            width: 100px;
+            height:20px;
+            position:absolute;
+            right:40px;
+            top:120px;
+        }
+    </style>
+</head>
+<body>
+    <div id="main"></div>
+    <button id="updown">UP/DOWN</button>
+    <button id="step">STEP UP</button>
+    <input type="range" id="rng" value="5" step="1" min="1" max="100" />
+</body>
+</html>
