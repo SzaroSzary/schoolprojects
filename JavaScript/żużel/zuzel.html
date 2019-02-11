@@ -1,0 +1,269 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+    <title>Żużel</title>
+    <meta charset="UTF-8"/>
+    <style>
+        #info{
+            position: absolute;
+            left: 10px;
+            top: 500px;
+            font-size: 30px;
+        }
+    </style>
+</head>
+<body onload="canvas()">
+    <canvas id="zuzelmap" width="640px" height="360px" style="width:640px;height:360px;border:2px black solid;position:absolute;left: calc(50% - 320px);background:#00ff00;"></canvas>
+    <canvas id="red" width="640px" height="360px" style="width:640px;height:360px;position:absolute;left: calc(50% - 320px);"></canvas>
+    <canvas id="green" width="640px" height="360px" style="width:640px;height:360px;position:absolute;left: calc(50% - 320px);"></canvas>
+    <canvas id="cyan" width="640px" height="360px" style="width:640px;height:360px;position:absolute;left: calc(50% - 320px);"></canvas>
+    <canvas id="magenta" width="640px" height="360px" style="width:640px;height:360px;position:absolute;left: calc(50% - 320px);"></canvas>
+    <div id="info">
+        Gracz 1 (czerwony) = A</br>
+    Gracz 2 (zielony) = F</br>
+    Gracz 3 (niebieski) = J</br>
+    Gracz 4 (fioletowy) = &lt;-</br>
+    </div>
+    <select id="playercount" >
+        <option value="0">Choose option</option>
+        <option value="1">1</option>
+        <option value="2">2</option>
+        <option value="3">3</option>
+        <option value="4">4</option>
+    </select>
+    <button id="start">Start</button>
+    <script>
+        var expath
+        var inpath
+        var sources = {
+            redbike: "img/redbike.png",
+            greenbike: "img/greenbike.png",
+            magentabike: "img/magentabike.png",
+            cyanbike: "img/cyanbike.png"
+        }
+        var loadImages = function (sources, callback) {
+            var images = {}
+            var loadedImages = 0
+            var numImages = 0
+
+            for (var src in sources) {
+                numImages++
+            }
+            for (var src in sources) {
+                images[src] = new Image()
+                images[src].onload = function () {
+                    if (++loadedImages >= numImages) {
+                        callback(images)
+                    }
+                }
+                images[src].src = sources[src]
+            }
+        }
+        function track(ctx){
+            var exterior = true
+            var stop=false
+            while(!stop){
+                if(exterior == true){
+                    expath = new Path2D()
+                    expath.arc(180,180,180,(Math.PI)/2,(3*(Math.PI/2)))
+                    expath.lineTo(460,0);
+                    expath.arc(460,180,180,(3*(Math.PI/2)),(Math.PI)/2)
+                    expath.lineTo(180,360);
+                    expath.closePath()
+                    ctx.stroke(expath)
+                    ctx.fillStyle ="#ffffff"
+                    ctx.fill(expath)
+                    exterior = false
+                }
+                else{
+                    inpath = new Path2D()
+                    inpath.arc(180,180,90,(Math.PI)/2,(3*(Math.PI/2)))
+                    inpath.lineTo(460,90);
+                    inpath.arc(460,180,90,(3*(Math.PI/2)),(Math.PI)/2)
+                    inpath.lineTo(180,270);
+                    inpath.closePath()
+                    ctx.stroke(inpath)
+                    ctx.fillStyle ="#00ff00"
+                    ctx.fill(inpath)
+                    stop = true
+                }
+            }
+        }
+        class Player {
+            constructor(lastx, lasty, color) {
+                this.x = 0,
+                this.y = 0,
+                this.r = 1,
+                this.lastx = lastx,
+                this.lasty = lasty,
+                this.dx = 0,
+                this.dy = 0,
+                this.alpha = 0,
+                this.turn = false
+				this.start = true
+				this.color = color
+                this.behind = []
+            }
+        }
+        function playermove(playertab,ctx, ctx2, ctx3, ctx4, ctx5){
+            var gamestart = true
+            document.onkeydown = function (e) {
+                switch(e.which){
+                    case 65:
+                        playertab[0].turn = true
+                        break;
+                    case 70:
+                        playertab[1].turn = true
+                        break;
+                    case 74:
+                        playertab[2].turn = true
+                        break;
+                    case 37:
+                        playertab[3].turn = true
+                        break;
+                }
+                turn = true
+            }
+            document.onkeyup = function(e){
+                switch(e.which){
+                    case 65:
+                        playertab[0].turn = false
+                        break;
+                    case 70:
+                        playertab[1].turn = false
+                        break;
+                    case 74:
+                        playertab[2].turn = false
+                        break;
+                    case 37:
+                        playertab[3].turn = false
+                        break;
+                }
+            }
+            var j = setInterval(function(){
+                for(var i=0;i<playertab.length;i++){
+					if(playertab[i].start){
+                        if(playertab[i].behind.length == 100){
+						    ctx.beginPath()
+                            ctx.moveTo(playertab[i].behind[0].nextx,playertab[i].behind[0].nexty)
+                            ctx.lineTo(playertab[i].behind[0].behindx,playertab[i].behind[0].behindy)
+                            ctx.strokeStyle = "#ffffff"
+                            ctx.lineWidth = 3
+                            ctx.stroke()
+                            playertab[i].behind.shift()
+                        }
+                        switch (i) {
+                            case 0:
+                                loadImages(sources, function (images) {
+                                    ctx2.save()
+                                    ctx2.translate(playertab[0].x, playertab[0].y)
+                                    ctx2.clearRect(-15, -15, 50, 55)
+                                    ctx2.rotate(playertab[0].alpha)
+                                    ctx2.drawImage(images.redbike, -10, -14, 30, 30)
+                                    ctx2.restore()
+                                })
+                                break
+                            case 1:
+                                loadImages(sources, function (images) {
+                                    ctx3.save()
+                                    ctx3.translate(playertab[1].x, playertab[1].y)
+                                    ctx3.clearRect(-15, -15, 50, 55)
+                                    ctx3.rotate(playertab[1].alpha)
+                                    ctx3.drawImage(images.greenbike, -10, -14, 30, 30)
+                                    ctx3.restore()
+                                })
+                                break
+                            case 2:
+                                loadImages(sources, function (images) {
+                                    ctx4.save()
+                                    ctx4.translate(playertab[2].x, playertab[2].y)
+                                    ctx4.clearRect(-15, -15, 50, 55)
+                                    ctx4.rotate(playertab[2].alpha)
+                                    ctx4.drawImage(images.magentabike, -10, -14, 30, 30)
+                                    ctx4.restore()
+                                })
+                                break
+                            case 3:
+                                loadImages(sources, function (images) {
+                                    ctx5.save()
+                                    ctx5.translate(playertab[3].x, playertab[3].y)
+                                    ctx5.clearRect(-15, -15, 50, 55)
+                                    ctx5.rotate(playertab[3].alpha)
+                                    ctx5.drawImage(images.cyanbike, -10, -14, 30, 30)
+                                    ctx5.restore()
+                                })
+                                break
+                        }
+						playertab[i].dx = playertab[i].r*Math.cos(playertab[i].alpha)
+						playertab[i].dy = playertab[i].r*Math.sin(playertab[i].alpha)
+						playertab[i].x = playertab[i].lastx+playertab[i].dx
+						playertab[i].y = playertab[i].lasty+playertab[i].dy
+                        playertab[i].behind.push({
+                            behindx: playertab[i].lastx,
+                            behindy: playertab[i].lasty,
+                            nextx: playertab[i].x,
+                            nexty: playertab[i].y,
+                        })
+                        ctx.lineWidth = 1
+						ctx.beginPath()
+						ctx.moveTo(playertab[i].x,playertab[i].y)
+						ctx.lineTo(playertab[i].lastx,playertab[i].lasty)
+						playertab[i].lastx = playertab[i].x
+						playertab[i].lasty = playertab[i].y
+						ctx.strokeStyle = playertab[i].color
+						ctx.stroke()
+						if(!ctx.isPointInPath(expath,playertab[i].lastx,playertab[i].lasty) || ctx.isPointInPath(inpath,playertab[i].lastx,playertab[i].lasty)){
+							playertab[i].start = false
+						}
+						if(playertab[i].turn){
+							playertab[i].alpha-=0.01
+						}
+					}
+                }
+            },(10*playertab.length))
+        }
+        function canvas(){
+            var el = document.getElementById("zuzelmap")
+            var red = document.getElementById("red")
+            var green = document.getElementById("green")
+            var magenta = document.getElementById("magenta")
+            var cyan = document.getElementById("cyan")
+            var ctx = el.getContext("2d");
+            var ctx2 = red.getContext("2d");
+            var ctx3 = green.getContext("2d");
+            var ctx4 = magenta.getContext("2d");
+            var ctx5 = cyan.getContext("2d");
+            track(ctx)
+            var playertab = []
+            document.getElementById("playercount").oninput = function(){
+                switch(document.getElementById("playercount").value){
+                    case "1":
+                        playertab.push(new Player(200,300,"#ff0000"))
+                        break;
+                    case "2":
+                        playertab.push(new Player(200,300,"#ff0000"))
+                        playertab.push(new Player(200,310,"#00ff00"))
+                        break;
+                    case "3":
+                        playertab.push(new Player(200,300,"#ff0000"))
+                        playertab.push(new Player(200,310,"#00ff00"))
+                        playertab.push(new Player(200,320,"#ff00ff"))
+                        break;
+                    case "4":
+                        playertab.push(new Player(200,300,"#ff0000"))
+                        playertab.push(new Player(200,310,"#00ff00"))
+                        playertab.push(new Player(200,320,"#ff00ff"))
+                        playertab.push(new Player(200,330,"#00ffff"))
+                        break;
+                }
+            }
+            document.getElementById("start").onclick = function(){
+                for(var i=0;i<playertab.length;i++){
+                    var x = playertab[i]
+                    playermove(playertab,ctx, ctx2, ctx3, ctx4, ctx5)
+                }
+            }
+        }
+    </script>
+</body>
+</html>
