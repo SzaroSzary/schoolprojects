@@ -1,0 +1,8 @@
+{
+  "name": "skrzypczak-robert-3ic1-test1",
+  "version": "0.0.1",
+  "description": "testowy pakiet 1",
+  "main": "index.js",
+  "author": "robert skrzypczak",
+  "license": "ISC"
+}
