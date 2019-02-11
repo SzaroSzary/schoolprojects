@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#range1").on("input", function () {
+                console.log($("#range1").val())
+                $.ajax({
+                    url: "http://localhost:3000",
+                    data: { a: $("#range1").val() },
+                    type: "POST",
+                    success: function (data) {
+                        $("#range2").val(data)
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error: ' + error.message);
+                    },
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+    <form method="post">
+        <input type="range" id="range1" name="range1" style="width:100px;"/>
+        <input type="range" id="range2" name="range2" style="width:400px;"/>
+    </form>
+</body>
+</html>

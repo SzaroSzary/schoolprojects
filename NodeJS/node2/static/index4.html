@@ -1,0 +1,33 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            $("#klik").on("click", function () {
+                console.log($("#txt1").val())
+                $.ajax({
+                    url: "http://localhost:3000",
+                    data: { a: $("#txt1").val(), b: $("#txt2").val() },
+                    type: "POST",
+                    success: function (data) {
+                        var obj = JSON.parse(data)
+                        alert(data)
+                        //tu wypisz sumę w div-ie na stronie
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error: ' + error.message);
+                    },
+                })
+            });
+        })
+    </script>
+</head>
+<body>
+    <input type="text" name="txt1" id="txt1"/>
+    <input type="text" name="txt2" id="txt2"/>
+    <div id="klik" style="width:100px;height:100px;background:red;">KLIKNIJ</div>
+</body>
+</html>
