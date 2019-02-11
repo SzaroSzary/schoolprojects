@@ -1,0 +1,32 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+	<meta charset="utf-8" />
+    <script src="libs/three.js"></script>
+    <script src="js/Game.js"></script>
+    <script src="js/Net.js"></script>
+    <script src="js/UI.js"></script>
+    <link href="style.css" rel="stylesheet" />
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script>
+        var game;
+        var net;
+        var ui;
+        window.addEventListener("load", function () {
+            game = new Game()
+            net = new Net();
+            ui = new Ui();
+        })
+    </script>
+</head>
+<body>
+    <select id="kamera"></select>
+    <div id="plansza"></div>
+    <div id="loginscreen">
+        <input type="text" id="login" />
+        <div id="accept">LOGUJ</div>
+        <div id="reset">RESET</div>
+    </div>
+</body>
+</html>
