@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>T: jquery - start</title>
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script>
+        //sprawdzenie czy jquery działa i obsługuje dokument
+         $(document).ready(function () {
+            console.log("działa")
+            alert("OK")
+             //T: dodawanie zdarzeń do elementów HTML
+             //T: zmiana css za pomocą jquery
+            $("#bt1").on("click", function () {
+                alert("klik")
+                $("#bt1").css("background", "#ff0000")
+                $("#bt1").css("color", "#ffff00")
+                $("#bt1").width("200px")
+                $("#bt1").height("200px")
+            })
+             //usuwam możliwość klikania buttona
+             $("#bt1").off("click")
+        })
+    </script>
+</head>
+<body>
+    <button id="bt1" value="test">NAPIS</button>
+</body>
+</html>

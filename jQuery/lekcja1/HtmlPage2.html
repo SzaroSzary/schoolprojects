@@ -1,0 +1,40 @@
+﻿<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>T: tablice, for, dynamiczne elementy html</title>
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            //tablica
+            var tab = ["a", "b", "c","d"]
+            console.log("długość tablicy " + tab.length)
+            //for
+            for (var i = 0; i < tab.length; i++) {
+                console.log("indeks tablicy = " + i + " element tablicy = " + tab[i])
+                //
+                var b = $("<button>")
+                if (i < 2) {
+                    b.css("background", "#00ff00")
+                } else {
+                    b.css("background", "#0000ff")
+                }
+                b.width("100px")
+                b.height("100px")
+                b.html("<i>" +tab[i])
+                $("#div1").append(b)
+                //klik
+                b.on("click", function() {
+                    alert("szer = " + $(this).width())
+
+                })
+            }
+        })
+
+    </script>
+</head>
+<body>
+    <div id="div1">
+
+    </div>
+</body>
+</html>

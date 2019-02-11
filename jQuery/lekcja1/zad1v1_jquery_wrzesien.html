@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <title>cokolwiek</title>
+    <script src="libs/jquery-3.1.0.min.js"></script>
+    <script>
+        $(document).ready(function () {
+            var x = true
+            $("#button1").on("click", function () {
+                if (x == true) {
+                    $("h2").text("Listenery wlaczone")
+                    $("#first").on("mouseover", function () {
+                        $("#first").css("background", "grey")
+                    })
+                    $("#first").on("mouseout", function () {
+                        $("#first").css("background", "black")
+                    })  
+                    x = false;
+                }
+                else {
+                    $("h2").text("Listenery wylaczone")
+                    $("#first").on("mouseover", function () {
+                        $("#first").css("background", "black")
+                    })
+                    $("#first").on("mouseout", function () {
+                        $("#first").css("background", "black")
+                    })
+                    x = true;
+                }
+            })
+        })
+    </script>
+    <style>
+        body {
+            font-family: Arial;
+        }
+        #first {
+            width:500px;
+            background-color:black;
+            height: 50px;
+            
+        }
+        #first h1 {
+            margin-top: 0px;
+        }
+        #button1, #button2 {
+            width:500px;
+        }
+        #button2 {
+            margin-top: 70px;
+        }
+        #button2 a {
+            display: block;
+            width:500px;
+            text-decoration: none;
+            color: black;
+        }
+    </style>
+</head>
+<body>
+    <div id="all">
+        <h1>T: Wprowadzenie do jquery</h1>
+        <h2>Listenery wlaczone</h2>
+        <button id="button1" value="button1">Dodaj / usun listenery</button>
+        <div id="first">
+            <h1><b>bolden</b> <i>italic</i></h1>
+        </div>
+        <button id="button2" value="button2"><a href="zad1v2_jquery_wrzesien.html">next</a></button>
+    </div>
+</body>
+</html>
