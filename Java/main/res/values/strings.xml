@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">ProjektKoncowySkrzypczak</string>
+    <string name="photo">zdjęcie</string>
+    <string name="album">album</string>
+    <string name="collage">kolaż</string>
+    <string name="web">zobacz w sieci</string>
+    <string name="note">notatki</string>
+</resources>

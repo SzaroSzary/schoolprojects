@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.example.a4ic1.projektkoncowyskrzypczak.Activities.CollageActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:id="@+id/collagerel"
+        android:background="@color/black"
+        android:layout_weight="1">
+    </FrameLayout>
+    <ImageButton
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:src="@drawable/ic_add_black_48dp"
+        android:layout_weight="0"
+        android:contentDescription="add"
+        android:id="@+id/savecollage"
+        android:background="@color/white"/>
+</LinearLayout>
