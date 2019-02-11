@@ -1,0 +1,31 @@
+﻿body {
+    margin: 0;
+    padding: 0;
+    background: black;
+}
+
+#myCanvas, #myCanvas2, #myCanvas3 {
+    position: absolute;
+    left: calc(50% - 480px);
+    top: calc(50% - 350px);
+    width: 960px;
+    height: 700px;
+}
+
+#iteminfo{
+    width:288px;
+    height:112px;
+    position:absolute;
+    background:black;
+    left: calc(50% - 480px);
+    top: calc(50% - 350px);
+}
+
+#pointinfo {
+    width: 360px;
+    height: 112px;
+    position: absolute;
+    background: black;
+    right: calc(50% - 480px);
+    top: calc(50% - 350px);
+}

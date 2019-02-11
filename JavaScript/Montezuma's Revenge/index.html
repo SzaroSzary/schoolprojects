@@ -1,0 +1,53 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <title>Montezuma's Revenge</title>    
+    <link href="css/style.css" rel="stylesheet" />
+    <script src="js/Textures.js"></script>
+    <script src="js/LevelLoading.js"></script>
+    <script src="js/Sprites.js"></script>
+    <script src="js/Parse.js"></script>
+    <script src="js/Character.js"></script>
+    <script src="js/Movement.js"></script>
+    <script src="js/Collision.js"></script>
+    <script src="js/Physics.js"></script>
+    <script src="js/Menu.js"></script>
+    <script src="js/Items.js"></script>
+    <script src="js/Enemies.js"></script>
+    <script>
+        var Textures = new Textures()
+        var LevelLoading = new LevelLoading()
+        var Sprites = new Sprites()
+        var Parse = new Parse()
+        var Character = new Character()
+        var Movement = new Movement()
+        var Collision = new Collision()
+        var Physics = new Physics()
+        var Menu = new Menu()
+        var Items = new Items()
+        var Enemies = new Enemies()
+        Parse.parseWhenReady()
+        Movement.move()
+    </script>
+</head>
+<body>
+    <canvas id="myCanvas" width="960" height="700"></canvas>
+    <canvas id="myCanvas2" width="960" height="700"></canvas>
+    <canvas id="myCanvas3" width="960" height="700"></canvas>
+    <div id="iteminfo"></div>
+    <div id="pointinfo"></div>
+    <script>
+        var canvas = document.getElementById('myCanvas');
+        var canvas3 = document.getElementById('myCanvas3');
+        var canvas2 = document.getElementById('myCanvas2');
+        var itemdiv = document.getElementById("iteminfo")
+        var pointdiv = document.getElementById("pointinfo")
+        Menu.generateItemInfo()
+        Menu.generatePointInfo()
+        var ctx1 = canvas.getContext('2d');
+        var ctx3 = canvas3.getContext('2d');
+        var ctx2 = canvas2.getContext('2d');
+    </script>
+</body>
+</html>
