@@ -1,0 +1,79 @@
+﻿﻿<!DOCTYPE html>
+<html>
+<head>
+    <title></title>
+    <meta charset="utf-8" />
+    <script src="https://code.jquery.com/jquery-3.1.1.js"></script>
+    <script>
+        $(document).ready(function () {
+            function send() {
+                $.ajax({
+                    url: "http://localhost:3000",
+                    data: "",
+                    type: "POST",
+                    success: function (data) {
+                        received = data
+                        firstselect(data)
+                    },
+                    error: function (xhr, status, error) {
+                        console.log('Error: ' + error.message);
+                    },
+                })
+            }
+            function firstselect(data) {
+                data = JSON.parse(data)
+                data = data.lokacje
+                var nazwywoj = []
+                for (var i = 0; i < data.length; i++) {
+                    nazwywoj.push(data[i].wojewodztwo)
+                }
+                var wojewodztwa = []
+                $.each(nazwywoj, function (i, el) {
+                    if ($.inArray(el, wojewodztwa) === -1) wojewodztwa.push(el);
+                });
+                for (var i = 0; i < wojewodztwa.length; i++) {
+                    var woj = document.createElement("OPTION")
+                    woj.setAttribute("value", wojewodztwa[i] + "")
+                    woj.innerHTML = wojewodztwa[i]+""
+                    $("#woj").append(woj)
+                }
+                var nazwymia = []
+                $("#woj").on("change", function () {
+                    if ($("#mia")) {
+                        $("#mia").remove()
+                    }
+                    nazwymia = []
+                    for (var i = 0; i < data.length; i++) {
+                        if ($("#woj").val() == data[i].wojewodztwo) {
+                            nazwymia.push(data[i].miasto)
+                        }
+                    }
+                    var miasel = document.createElement("SELECT")
+                    miasel.id = "mia"
+                    $("body").append(miasel)
+                    for (var i = 0; i < nazwymia.length; i++) {
+                        var mia = document.createElement("OPTION")
+                        mia.setAttribute("value", nazwymia[i] + "")
+                        mia.innerHTML = nazwymia[i] + ""
+                        $("#mia").append(mia)
+                    }
+                    $("#mia").on("change", function () {
+                        console.log("dziala")
+                        for (var i = 0; i < data.length; i++) {
+                            if ($("#mia").val() == data[i].miasto) {
+                                $("#response").html("Ludność: " + data[i].mieszkancy)
+                            }
+                        }
+                    })
+                })
+                console.log(wojewodztwa)
+            }
+            send()
+        })
+    </script>
+</head>
+<body>
+    <select id="woj"></select>
+    <div id="response"></div>
+</body>
+</html>
