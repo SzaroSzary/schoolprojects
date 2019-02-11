@@ -1,0 +1,151 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>Geometry</title>
+    <meta charset="utf-8" />
+    <script src="three.js"></script>
+    <script>
+        window.addEventListener("load", function () {
+            var szerokosc = window.innerWidth
+            var wysokosc = window.innerHeight
+            var mixer = []
+            var fov = 45
+            var res = 4 / 3
+            var minrender = 0.1
+            var maxrender = 10000
+            var scene = new THREE.Scene();
+            var camera = new THREE.PerspectiveCamera(
+                fov,
+                res,
+                minrender,
+                maxrender
+                );
+            var renderer = new THREE.WebGLRenderer();
+            renderer.setClearColor(0xffffff);
+            renderer.setSize(szerokosc, wysokosc);
+            var geometry = new THREE.PlaneBufferGeometry(1000, 1000, 32);
+            var material = new THREE.MeshBasicMaterial({ side: THREE.DoubleSide, map: THREE.ImageUtils.loadTexture('img/1.jpg') });
+            var plane = new THREE.Mesh(geometry, material);
+            plane.material.map.repeat.set(16, 16);
+            plane.material.map.wrapS = plane.material.map.wrapT = THREE.RepeatWrapping;
+            plane.rotateX(Math.PI/2)
+            scene.add(plane);
+            document.getElementById("main").appendChild(renderer.domElement);
+            var pos = 500
+            camera.position.x = pos 
+            camera.position.y = pos
+            camera.position.z = pos
+            camera.lookAt(plane.position);
+            var modelMaterial = new THREE.MeshBasicMaterial(
+            {
+                map: THREE.ImageUtils.loadTexture("img/billywork.png"),
+                morphTargets: true,
+            });
+            var loader = new THREE.JSONLoader();
+            var animnames = []
+            loader.load('models/tris.js', function (geometry) {
+                meshModel = new THREE.Mesh(geometry, modelMaterial)
+                meshModel.name = "billy";
+                meshModel.position.y = 50
+                meshModel.rotateY(Math.PI)
+                meshModel.scale.set(2,2,2);
+                scene.add(meshModel);
+                for (var i = 0, j=0; i < geometry.animations.length; i++) {
+                    var button = document.createElement("DIV")
+                    button.id = "button" + i
+                    button.innerHTML = geometry.animations[i].name + ""
+                    animnames[i]=geometry.animations[i].name
+                    if (i < 8) {
+                        button.setAttribute("style", "width:100px;height:30px;border-radius:30px;background:rgba(66,66,66,0.8);position:absolute;right:150px;top:" + (50 * i) + "px;color:white;text-align:center;padding-top:10px;")
+                    }
+                    else {
+                        button.setAttribute("style", "width:100px;height:30px;border-radius:30px;background:rgba(66,66,66,0.8);position:absolute;right:30px;top:" + (50 * j) + "px;color:white;text-align:center;padding-top:10px;")
+                        j++
+                    }
+                    mixer[0] = new THREE.AnimationMixer(meshModel);
+                    mixer[0].clipAction("run").play();
+                    button.onclick = function () {
+                        mixer[0].uncacheRoot(mixer.getRoot())
+                        mixer[0].clipAction(this.innerHTML).play();
+                    }
+                    document.body.appendChild(button)
+                }
+            });
+            var clock = new THREE.Clock();
+            function animateScene() {
+                var delta = clock.getDelta();
+                for (var i = 0; i < mixer.length; i++) {
+                    if (mixer[i]) { mixer[i].update(delta) }
+                }
+                camera.updateProjectionMatrix();
+                renderer.render(scene, camera);
+                requestAnimationFrame(animateScene);
+            }
+            animateScene();
+            var minclone = 0
+            var maxclone = 0
+            var klony = new THREE.Object3D()
+            var clones
+            document.getElementById("clone").onclick = function () {
+                for (var k = klony.children.length; k >= 0; k--) {
+                    klony.remove(klony.children[k])
+                }
+                minclone--
+                maxclone++
+                generateclones(minclone, maxclone)
+                scene.add(klony)
+            }
+            document.getElementById("delete").onclick = function () {
+                if (minclone != 0) {
+                    for (var k = klony.children.length; k >= 0; k--) {
+                        klony.remove(klony.children[k])
+                    }
+                    minclone++
+                    maxclone--
+                    generateclones(minclone,maxclone)
+                    scene.add(klony)
+                }
+            }
+            document.getElementById("remove").onclick = function () {
+                if (minclone != 0) {
+                    for (var k = klony.children.length; k >= 0; k--) {
+                        klony.remove(klony.children[k])
+                    }
+                    minclone= 0
+                    maxclone= 0
+                }
+            }
+            function generateclones(minclone, maxclone) {
+                clones = new THREE.AnimationObjectGroup()
+                for (var i = minclone,k=1; i < maxclone; i++) {
+                    for (var j = minclone; j < maxclone; j++,k++) {
+                        var clone = meshModel.clone();
+                        clone.position.x = (i * 100) + 50
+                        clone.position.z = (j * 100) + 50
+                        clone.position.y = 50
+                        clones.add(clone)
+                        klony.add(clone)
+                        mixer[k] = new THREE.AnimationMixer(clone);
+                        mixer[k].clipAction("run").play();
+                    }
+                }
+                for (var i = 0; i < klony.children.length; i++) {
+                }
+                console.log(clones)
+            }
+        })
+    </script>
+    <style>
+        body {
+            margin: 0;
+            overflow: hidden;
+        }
+    </style>
+</head>
+<body>
+    <div id="clone" style="width:100px;height:30px;border-radius:30px;background:rgba(66,66,66,0.8);position:absolute;left:30px;top:10px;color:white;text-align:center;padding-top:10px;">clone</div>
+    <div id="delete" style="width:100px;height:30px;border-radius:30px;background:rgba(66,66,66,0.8);position:absolute;left:150px;top:10px;color:white;text-align:center;padding-top:10px;">delete</div>
+    <div id="remove" style="width:100px;height:30px;border-radius:30px;background:rgba(66,66,66,0.8);position:absolute;left:270px;top:10px;color:white;text-align:center;padding-top:10px;">remove</div>
+    <div id="main"></div>
+</body>
+</html>
