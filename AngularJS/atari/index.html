@@ -1,0 +1,138 @@
+<!DOCTYPE HTML>
+<html ng-app="mainApp">
+<head> 
+    <meta charset="utf-8"/>
+    <title>Atari czasopisma</title>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.6/angular.min.js"></script>
+    <script>
+        var testApp = angular.module("mainApp",[]);
+        testApp.controller("mainController",function($scope, $http){
+            $scope.czasopisma = true
+            $scope.lata = false
+            $scope.tabelka = false
+            $scope.wybrano = false
+            $scope.latadata = ""
+            $scope.source = ""
+            $http({
+                url:"ajax2.php",
+                method: "GET",
+                params:{f:1}
+            }).then(function(response){
+                $scope.czasopismadata = response.data
+                $scope.obj2 = [];
+                while ($scope.czasopismadata.length) {
+                    $scope.obj2.push($scope.czasopismadata.splice(0, 2))
+                }
+            })
+            $scope.dwa = function(klik){
+                $scope.czasopisma = false
+                $scope.lata = true
+                $scope.wybrano = true
+                $scope.source = klik
+                $http({
+                    url:"ajax2.php",
+                    method: "GET",
+                    params:{f:2,val:$scope.source}
+                }).then(function(response){
+                    $scope.latadata = response.data
+                    if($scope.source == "Bajtek"){
+                        $scope.latadata = Object.values($scope.latadata[0])[0]
+                        $scope.latadata = $scope.latadata.slice(1,$scope.latadata.length-1)
+                        $scope.latadata = $scope.latadata.split(",")
+                    }  
+                    else
+                        $scope.latadata = Object.values($scope.latadata[0])[0].split(",")
+                })
+            }
+            $scope.trzy = function(klik){
+                $scope.tabelka = true
+                $http({
+                    url:"ajax2.php",
+                    method: "GET",
+                    params:{f:3,val:$scope.source,year:klik}
+                }).then(function(response){
+                    $scope.tabelkadata = response.data
+                    $scope.czas2 = [];
+                    while ($scope.tabelkadata.length) {
+                        $scope.czas2.push($scope.tabelkadata.splice(0, 2))
+                    }
+                })
+            }
+            $scope.cofnij = function(){
+                $scope.czasopisma =true
+                $scope.lata = false
+                $scope.tabelka = false
+            }
+            $scope.wszystkie = function(){
+                $scope.tabelka = true
+                $http({
+                    url:"ajax2.php",
+                    method: "GET",
+                    params:{f:4,val:$scope.source}
+                }).then(function(response){
+                    $scope.tabelkadata = response.data
+                    $scope.czas2 = [];
+                    while ($scope.tabelkadata.length) {
+                        $scope.czas2.push($scope.tabelkadata.splice(0, 2))
+                    }
+                })
+            }
+        })
+    </script>
+    <style>
+    .year{
+        border: 1px black solid;
+        background: lightgray;
+        margin-left: 10px;
+        }
+    </style>
+</head>
+<body ng-controller="mainController">
+    <table ng-show="czasopisma">
+        <tr ng-repeat="array in obj2">
+            <td><img ng-click="dwa(x.klik)" ng-repeat="x in array" ng-src="http://www.atarionline.pl/biblioteka/czasopisma/img/{{x.src}}"/></td>
+        </tr>
+    </table>
+    <div ng-show="lata">
+        <span ng-click="trzy(x)" ng-repeat="x in latadata" class="year">{{x}}</span>
+        <span ng-click="cofnij()" class="year">cofnij</span>
+        <span ng-click="wszystkie()" ng-show="wybrano" class="year">wszystkie</span>
+    </div>
+    <table ng-show="tabelka" border="1">
+        <tr ng-repeat="array in czas2" >
+            <td ng-repeat="x in array" ng-if="$index %2 ==0 "><img ng-src="http://www.atarionline.pl/biblioteka/czasopisma/{{source}}/{{x.miniaturka}}"/></td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==0 ">
+                format: <b>{{x.format}}</b><br/>
+                stron: <b>{{x.stron}}</b><br/>
+                <a ng-href="http://www.atarionline.pl/biblioteka/czasopisma/{{source}}/{{x.plik}}">tutaj</a>
+            </td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==0 ">
+                nazwa: <b>{{x.nazwa}}</b><br/>
+                numer: <b>{{x.numer}}</b><br/>
+                wydawca: <b>{{x.wydawca}}</b>
+            </td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==0 ">
+                skan: <b>{{x.skan}}</b><br/>
+                przetworzenie: <b>{{x.przetworzenie}}</b><br/>
+                podesłał: <b>{{x.podeslal}}</b>
+            </td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==1 "><img ng-src="http://www.atarionline.pl/biblioteka/czasopisma/{{source}}/{{x.miniaturka}}"/></td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==1 ">
+                format: <b>{{x.format}}</b><br/>
+                stron: <b>{{x.stron}}</b><br/>
+                <a ng-href="http://www.atarionline.pl/biblioteka/czasopisma/{{source}}/{{x.plik}}">tutaj</a>
+            </td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==1 ">
+                nazwa: <b>{{x.nazwa}}</b><br/>
+                numer: <b>{{x.numer}}</b><br/>
+                wydawca: <b>{{x.wydawca}}</b>
+            </td>
+            <td ng-repeat="x in array" ng-if="$index %2 ==1 ">
+                skan: <b>{{x.skan}}</b><br/>
+                przetworzenie: <b>{{x.przetworzenie}}</b><br/>
+                podesłał: <b>{{x.podeslal}}</b>
+            </td>
+        </tr>
+    </table>
+</body>
+</html>
